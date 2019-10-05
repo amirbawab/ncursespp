@@ -3,10 +3,13 @@
 #include <ncursespp/window.h>
 
 int main() {
+  npp::WindowOptions terminal_options;
+  terminal_options.show_cursor = false;
 
-  npp::Terminal terminal;
+  npp::Terminal terminal(terminal_options);
   terminal.init();
+  terminal.AddChild(&terminal);
+  getch();
   terminal.end();
-  printf("%d %d %d %d\n", terminal.Width(), terminal.Height(), terminal.X(), terminal.Y());
   return 0;
 }
