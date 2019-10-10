@@ -1,6 +1,8 @@
 #ifndef NPP_VIEW_H_
 #define NPP_VIEW_H_
 
+#include <cinttypes>
+
 namespace npp {
 
 struct View {
