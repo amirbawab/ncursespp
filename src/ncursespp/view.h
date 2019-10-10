@@ -1,15 +1,13 @@
 #ifndef NPP_VIEW_H_
 #define NPP_VIEW_H_
 
-#include <cinttypes>
-
 namespace npp {
 
 struct View {
-  uint64_t x;
-  uint64_t y;
-  uint64_t rows;
-  uint64_t cols;
+  int x = 0;
+  int y = 0;
+  int rows = 0;
+  int cols = 0;
 };
 
 } // namespace npp

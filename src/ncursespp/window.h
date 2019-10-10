@@ -14,13 +14,17 @@ struct WindowOptions {
 class Window {
 private:
   WindowOptions options_;
-  npp::Panel panel_;
   WINDOW* window_ = nullptr;
+  npp::Panel panel_;
 public:
   explicit Window(WindowOptions options = WindowOptions());
   void Initialize();
   void Destroy();
-  npp::Panel* Panel() { return &panel_;};
+  int Rows() const { return LINES; }
+  int Cols() const { return COLS; }
+  npp::View View() const;
+  npp::Panel* Panel() { return &panel_; }
+  void Fit();
 };
 
 } // namespace npp
