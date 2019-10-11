@@ -18,10 +18,7 @@ enum BorderStyle {
 #undef BORDER_STYLE_ENUM
 
 struct Border {
-  BorderStyle top = None;
-  BorderStyle left = None;
-  BorderStyle right = None;
-  BorderStyle bottom = None;
+  BorderStyle style = None;
 };
 
 } // namespace npp

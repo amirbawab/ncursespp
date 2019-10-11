@@ -4,14 +4,16 @@
 #include <map>
 #include <ncursespp/view.h>
 #include <ncursespp/panel.h>
+#include <ncursespp/border.h>
 
 namespace npp {
 
+template<class T>
 struct Direction {
-  int top;
-  int left;
-  int bottom;
-  int right;
+  T top;
+  T left;
+  T bottom;
+  T right;
 };
 
 enum Orientation {
@@ -21,9 +23,16 @@ enum Orientation {
 
 class Layout {
 protected:
-  Direction margin_;
-  Direction padding_;
+  Direction<int> margin_;
+  Direction<int> padding_;
+  Direction<npp::Border> border_;
 public:
+  void SetBorder(Direction<Border> border) { border_ = border; }
+  void SetMargin(Direction<int> margin) { margin_ = margin; }
+  void SetPadding(Direction<int> padding) { padding_ = padding; }
+  Direction<int> Margin() const { return margin_; }
+  Direction<int> Padding() const { return padding_; }
+  Direction<npp::Border> Border() const { return border_; }
   virtual void Fit(Panel* panel) = 0;
 };
 
