@@ -16,6 +16,10 @@ struct Direction {
   T right;
 };
 
+typedef Direction<int> Margins;
+typedef Direction<int> Paddings;
+typedef Direction<npp::Border> Borders;
+
 enum Orientation {
   Vertical,
   Horizontal
@@ -23,22 +27,26 @@ enum Orientation {
 
 class Layout {
 protected:
-  Direction<int> margin_;
-  Direction<int> padding_;
-  Direction<npp::Border> border_;
+  Margins margin_;
+  Paddings padding_;
+  Borders border_;
 public:
-  void SetBorder(Direction<Border> border) { border_ = border; }
-  void SetMargin(Direction<int> margin) { margin_ = margin; }
-  void SetPadding(Direction<int> padding) { padding_ = padding; }
-  Direction<int> Margin() const { return margin_; }
-  Direction<int> Padding() const { return padding_; }
-  Direction<npp::Border> Border() const { return border_; }
+  explicit Layout();
+  void SetBorder(Borders border) { border_ = border; }
+  void SetMargin(Margins margin) { margin_ = margin; }
+  void SetPadding(Paddings padding) { padding_ = padding; }
+  Margins Margin() const { return margin_; }
+  Paddings Padding() const { return padding_; }
+  Borders Border() const { return border_; }
+  npp::View MarginView(Panel* panel) const;
+  npp::View BorderView(Panel* panel) const;
+  npp::View PaddingView(Panel* panel) const;
   virtual void Fit(Panel* panel) = 0;
 };
 
 class TileLayout : public Layout {
 private:
-  Orientation orientation_ = Vertical;
+  Orientation orientation_ = Horizontal;
   std::map<std::string, float> weights_;
   float PanelWeight(Panel* panel);
 public:

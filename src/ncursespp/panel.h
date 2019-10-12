@@ -7,6 +7,7 @@
 
 namespace npp {
 
+class Window;
 class Layout;
 class Panel {
 private:
@@ -15,9 +16,12 @@ private:
   npp::Layout* layout_ = nullptr;
   Panel* parent_ = nullptr;
   std::vector<Panel*> children_;
+protected:
+  void PrintOuter(npp::Window* window);
 public:
   explicit Panel(std::string id = std::string());
   std::string Id() const { return id_; }
+  std::string SetId(std::string id) { id_ = std::move(id); }
   npp::Layout* Layout() const { return layout_; }
   void SetLayout(npp::Layout* layout) { layout_ = layout; }
   void AddChild(Panel* panel);
@@ -25,7 +29,10 @@ public:
   std::vector<npp::Panel*> Children() const { return children_; }
   void Fit();
   npp::View View() const { return view_; }
+  npp::View InnerView();
   void SetView(npp::View view) { view_ = view; }
+  virtual void Print(npp::Window* window); // TODO (amir) maybe promote to PrintWriter class?
+  void Clear(npp::Window* window);
 };
 
 } // namespace nppp

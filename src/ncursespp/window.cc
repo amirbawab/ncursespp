@@ -1,13 +1,14 @@
 #include <ncursespp/window.h>
+#include "layout.h"
 
 namespace npp {
 
-Window::Window(npp::WindowOptions options) : options_(options) {
-  window_ = stdscr;
-}
+Window::Window(npp::WindowOptions options) : options_(options), printer_(this) {}
 
 void Window::Initialize() {
+  setlocale(LC_ALL, "");
   initscr();
+  window_ = stdscr;
   if(options_.no_echo) noecho();
   if(options_.keypard) keypad(window_, TRUE);
 }
@@ -28,6 +29,14 @@ npp::View Window::View() const {
 void Window::Fit() {
   panel_.SetView(View());
   panel_.Fit();
+}
+
+void Window::Print() {
+  panel_.Print(this);
+}
+
+void Window::Clear() {
+  panel_.Clear(this);
 }
 
 } // namespace npp

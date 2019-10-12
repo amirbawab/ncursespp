@@ -1,3 +1,4 @@
+#include <ncursespp/window.h>
 #include <ncursespp/panel.h>
 #include <ncursespp/layout.h>
 #include <ncursespp/common.h>
@@ -32,6 +33,25 @@ void Panel::Fit() {
   for(auto& child : children_) {
     child->Fit();
   }
+}
+
+void Panel::PrintOuter(npp::Window *window) {
+  window->Printer().DrawBorder(layout_->Border(), layout_->MarginView(this));
+}
+
+npp::View Panel::InnerView() {
+  layout_->PaddingView(this);
+}
+
+void Panel::Print(npp::Window* window) {
+  PrintOuter(window);
+  for(auto& child : children_) {
+    child->Print(window);
+  }
+}
+
+void Panel::Clear(npp::Window *window) {
+  window->Printer().DrawEmptyView(view_);
 }
 
 } // namespace npp

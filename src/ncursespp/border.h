@@ -3,11 +3,11 @@
 
 namespace npp {
 
-// (name, vertical_side, horizontal_side, top_left, top_right, bottom_left, bottom_right)
+// (name, horizontal_side, vertical_side, top_left, top_right, bottom_left, bottom_right)
 #define BORDER_STYLE_LIST(V)  \
-  V(SolidThin, 2500, 2502, 250c, 2510, 2514, 2518)
+  V(SolidThin, "\u2500", "\u2502", "\u250c", "\u2510", "\u2514", "\u2518")
 
-#define BORDER_STYLE_ENUM(name, vside, hside, tl, tr, bl, br) \
+#define BORDER_STYLE_ENUM(name, hside, vside, tl, tr, bl, br) \
   name,
 
 enum BorderStyle {
@@ -18,7 +18,8 @@ enum BorderStyle {
 #undef BORDER_STYLE_ENUM
 
 struct Border {
-  BorderStyle style = None;
+  BorderStyle style = BorderStyle::None;
+  bool None() const { return style == BorderStyle::None; }
 };
 
 } // namespace npp
