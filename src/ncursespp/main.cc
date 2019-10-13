@@ -8,8 +8,8 @@ int main() {
   npp::Window main_window;
   main_window.Initialize();
 
-  npp::Button left_button("left");
-  npp::Button right_button("right");
+  npp::Button left_button("Left Button");
+  npp::Button right_button("Right Button");
 
   npp::Panel left("left");
   npp::Panel right("right");
@@ -22,7 +22,6 @@ int main() {
   left_border.right.style = npp::SolidThin;
   left_border.bottom.style = npp::SolidThin;
   left.Layout()->SetBorder(left_border);
-  left.Layout()->SetMargin({0, 0, 0, 0});
 
   auto main_panel = main_window.Panel();
   main_panel->AddChild(&left);

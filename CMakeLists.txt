@@ -31,5 +31,5 @@ import_ncurses(panel)
 
 file(GLOB_RECURSE PROJECT_SOURCE_FILES src/*.cc)
 add_executable(${LIB_NAME} ${PROJECT_SOURCE_FILES})
-target_link_libraries(${LIB_NAME} ncurses form menu panel)
+target_link_libraries(${LIB_NAME} ncursesw form menu panel)
 
