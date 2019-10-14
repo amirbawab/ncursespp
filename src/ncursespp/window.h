@@ -15,11 +15,19 @@ struct WindowOptions {
 class Window {
 private:
   WindowOptions options_;
+  npp::Printer* printer_;
+public:
+  explicit Window(WindowOptions options, npp::Printer* printer) : options_(options), printer_(printer) {}
+  const npp::Printer* Printer() const { return printer_; }
+  const WindowOptions& Options() const { return options_; }
+};
+
+class ScreenWindow : public Window {
+private:
   WINDOW* window_ = nullptr;
   npp::Panel panel_;
-  npp::Printer printer_;
 public:
-  explicit Window(WindowOptions options = WindowOptions());
+  explicit ScreenWindow(WindowOptions options = WindowOptions()) : Window(options, new npp::ScreenPrinter(this)) {};
   void Initialize();
   void Destroy();
   int Rows() const { return LINES; }
@@ -29,7 +37,6 @@ public:
   void Fit();
   void Print();
   void Clear();
-  const npp::Printer& Printer() const { return printer_; }
   WINDOW* CursesWindow() const { return window_; }
 };
 

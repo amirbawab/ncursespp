@@ -5,11 +5,11 @@
 
 namespace npp {
 
-void Printer::NC_AddStr(npp::Point point, std::string text) const {
+void ScreenPrinter::NC_AddStr(npp::Point point, std::string text) const {
   mvwaddstr(window_->CursesWindow(), point.y, point.x, text.c_str());
 }
 
-void Printer::NC_AddCh(npp::Point point, const chtype c) const {
+void ScreenPrinter::NC_AddCh(npp::Point point, const chtype c) const {
   mvwaddch(window_->CursesWindow(), point.y, point.x, c);
 }
 

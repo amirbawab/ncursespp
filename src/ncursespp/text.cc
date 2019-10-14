@@ -28,7 +28,7 @@ void Text::SetValue(std::string value) {
 
 void Text::Print(npp::Window* window) {
   auto inner_view = InnerView();
-  window->Printer().DrawTextBuffer(text_buffer_, inner_view);
+  window->Printer()->DrawTextBuffer(text_buffer_, inner_view);
 }
 
 } // namespace npp

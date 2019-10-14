@@ -17,14 +17,12 @@ struct TextPrinterOptions {
   bool wrap = true;
 };
 
-class Window;
+class ScreenWindow;
 class Printer {
-private:
-  npp::Window* window_;
-  inline void NC_AddStr(Point point, std::string text) const;
-  inline void NC_AddCh(Point point, unsigned int c) const;
+protected:
+  virtual void NC_AddStr(Point point, std::string text) const = 0;
+  virtual void NC_AddCh(Point point, unsigned int c) const = 0;
 public:
-  explicit Printer(npp::Window* window) : window_(window) {}
   void DrawTextBuffer(const npp::TextBuffer& text_buffer, View view, TextPrinterOptions options = TextPrinterOptions()) const;
   void DrawEmptyView(View view) const;
   void DrawVLine(Point point, int length, BorderStyle style = SolidThin) const;
@@ -34,6 +32,16 @@ public:
   void DrawBLCorner(Point point, BorderStyle style = SolidThin) const;
   void DrawBRCorner(Point point, BorderStyle style = SolidThin) const;
   void DrawBorder(Borders borders, View view) const;
+};
+
+class ScreenPrinter : public Printer {
+private:
+  npp::ScreenWindow* window_;
+protected:
+  void NC_AddStr(Point point, std::string text) const override;
+  void NC_AddCh(Point point, unsigned int c) const override;
+public:
+  explicit ScreenPrinter(npp::ScreenWindow* window) : window_(window) {}
 };
 
 } // namespace npp

@@ -35,7 +35,7 @@ void Panel::Fit() {
 }
 
 void Panel::PrintOuter(npp::Window *window) {
-  window->Printer().DrawBorder(layout_->Border(), layout_->MarginView(this));
+  window->Printer()->DrawBorder(layout_->Border(), layout_->MarginView(this));
 }
 
 npp::View Panel::InnerView() {
@@ -50,7 +50,7 @@ void Panel::Print(npp::Window* window) {
 }
 
 void Panel::Clear(npp::Window *window) {
-  window->Printer().DrawEmptyView(view_);
+  window->Printer()->DrawEmptyView(view_);
 }
 
 ScrollPanel::ScrollPanel() {
@@ -74,11 +74,11 @@ void ScrollPanel::Print(npp::Window *window) {
   // FIXME (amir) Temporary indicator of scroll panel
   TextBuffer vertical_text_buffer;
   vertical_text_buffer.FromString("Vertical Scroll");
-  window->Printer().DrawTextBuffer(vertical_text_buffer, right_scroll_.InnerView());
+  window->Printer()->DrawTextBuffer(vertical_text_buffer, right_scroll_.InnerView());
 
   TextBuffer horizontal_text_buffer;
   horizontal_text_buffer.FromString("Horizontal Scroll");
-  window->Printer().DrawTextBuffer(horizontal_text_buffer, bottom_scroll_.InnerView());
+  window->Printer()->DrawTextBuffer(horizontal_text_buffer, bottom_scroll_.InnerView());
 }
 
 } // namespace npp

@@ -3,21 +3,20 @@
 
 namespace npp {
 
-Window::Window(npp::WindowOptions options) : options_(options), printer_(this) {}
-
-void Window::Initialize() {
+void ScreenWindow::Initialize() {
   setlocale(LC_ALL, "");
   initscr();
   window_ = stdscr;
-  if(options_.no_echo) noecho();
-  if(options_.keypard) keypad(window_, TRUE);
+  auto options = Options();
+  if(options.no_echo) noecho();
+  if(options.keypard) keypad(window_, TRUE);
 }
 
-void Window::Destroy() {
+void ScreenWindow::Destroy() {
   endwin();
 }
 
-npp::View Window::View() const {
+npp::View ScreenWindow::View() const {
   npp::View view;
   view.x = 0;
   view.y = 0;
@@ -26,16 +25,16 @@ npp::View Window::View() const {
   return view;
 }
 
-void Window::Fit() {
+void ScreenWindow::Fit() {
   panel_.SetView(View());
   panel_.Fit();
 }
 
-void Window::Print() {
+void ScreenWindow::Print() {
   panel_.Print(this);
 }
 
-void Window::Clear() {
+void ScreenWindow::Clear() {
   panel_.Clear(this);
 }
 

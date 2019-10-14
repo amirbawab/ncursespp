@@ -5,7 +5,7 @@
 #include <ncursespp/button.h>
 
 int main() {
-  npp::Window main_window;
+  npp::ScreenWindow main_window;
   main_window.Initialize();
 
   // Border template
