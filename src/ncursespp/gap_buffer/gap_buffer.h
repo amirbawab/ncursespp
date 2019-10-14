@@ -139,7 +139,7 @@ public:
    * Value vector excluding gap
    * @return vector
    */
-  std::vector<T> Value() {
+  std::vector<T> Value() const {
     std::vector<T> result;
     result.insert(result.end(), buffer_.begin(), buffer_.begin() + gap_begin_);
     result.insert(result.end(), buffer_.begin() + gap_end_, buffer_.end());
@@ -150,7 +150,7 @@ public:
    * Buffer with gap
    * @return vector
    */
-  std::vector<T> Buffer() {
+  std::vector<T> Buffer() const {
     return buffer_;
   }
 };

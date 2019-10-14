@@ -1,6 +1,7 @@
 #include <ncursespp/printer.h>
 #include <ncursespp/window.h>
 #include <ncursespp/common.h>
+#include <algorithm>
 
 namespace npp {
 
@@ -12,8 +13,25 @@ void Printer::NC_AddCh(npp::Point point, const chtype c) const {
   mvwaddch(window_->CursesWindow(), point.y, point.x, c);
 }
 
-void Printer::DrawString(Point point, std::string text) const {
-  NC_AddStr(point, std::move(text));
+void Printer::DrawTextBuffer(const npp::TextBuffer &text_buffer, npp::View view,
+                             npp::TextPrinterOptions options) const {
+  int x_begin = view.x;
+  int y_begin = view.y;
+  int y_end = y_begin + view.rows;
+  Point text_point = {x_begin, y_begin};
+  auto text_vector = text_buffer.Value();
+  auto lines_count = text_vector.size();
+  for(auto i=0; i < lines_count && text_point.y < y_end; i++) {
+    auto line_vector = text_vector[i].Value();
+    auto line_length = line_vector.size();
+    size_t text_index = 0;
+    do {
+      size_t end_line = std::min(text_index + view.cols, line_length);
+      NC_AddStr(text_point, std::string(line_vector.begin() + text_index, line_vector.begin() + end_line));
+      text_index = end_line;
+      text_point.y++;
+    } while (options.wrap && text_index < line_length);
+  }
 }
 
 void Printer::DrawEmptyView(npp::View view) const {

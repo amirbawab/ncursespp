@@ -8,7 +8,7 @@ int main() {
   npp::Window main_window;
   main_window.Initialize();
 
-  npp::Button left_button("Left Button");
+  npp::Button left_button("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nbbb\nccc");
   npp::Button right_button("Right Button");
 
   npp::Panel left("left");

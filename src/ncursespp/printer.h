@@ -4,12 +4,17 @@
 #include <string>
 #include <ncursespp/view.h>
 #include <ncursespp/layout.h>
+#include <ncursespp/text.h>
 
 namespace npp {
 
 struct Point {
   int x;
   int y;
+};
+
+struct TextPrinterOptions {
+  bool wrap = true;
 };
 
 class Window;
@@ -20,7 +25,7 @@ private:
   inline void NC_AddCh(Point point, unsigned int c) const;
 public:
   explicit Printer(npp::Window* window) : window_(window) {}
-  void DrawString(Point point, std::string text) const;
+  void DrawTextBuffer(const npp::TextBuffer& text_buffer, View view, TextPrinterOptions options = TextPrinterOptions()) const;
   void DrawEmptyView(View view) const;
   void DrawVLine(Point point, int length, BorderStyle style = SolidThin) const;
   void DrawHLine(Point point, int length, BorderStyle style = SolidThin) const;
