@@ -22,7 +22,7 @@ public:
   explicit Panel(std::string id = std::string());
   std::string Id() const { return id_; }
   std::string SetId(std::string id) { id_ = std::move(id); }
-  npp::Layout* Layout() const { return layout_; }
+  virtual npp::Layout* Layout() const { return layout_; }
   void SetLayout(npp::Layout* layout) { layout_ = layout; }
   void AddChild(Panel* panel);
   bool RemoveChild(Panel* panel);
@@ -33,6 +33,18 @@ public:
   void SetView(npp::View view) { view_ = view; }
   virtual void Print(npp::Window* window); // TODO (amir) maybe promote to PrintWriter class?
   void Clear(npp::Window* window);
+};
+
+class ScrollPanel : public Panel {
+private:
+  Panel right_scroll_;
+  Panel bottom_scroll_;
+  Panel center_panel_;
+  void SetupPanels();
+public:
+  ScrollPanel();
+  npp::Panel* MainPanel() { return &center_panel_; }
+  void Print(npp::Window* window);
 };
 
 } // namespace nppp

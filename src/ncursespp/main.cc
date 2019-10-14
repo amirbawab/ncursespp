@@ -20,25 +20,7 @@ int main() {
   npp::Button left_button("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nbbb\nccc");
   left.AddChild(&left_button);
 
-  npp::Panel right;
-  npp::SidedLayout sided_layout;
-  right.SetLayout(&sided_layout);
-  npp::Panel right_top, right_left, right_bottom, right_right, right_center;
-  right_top.Layout()->SetBorder(border);
-  right_left.Layout()->SetBorder(border);
-  right_bottom.Layout()->SetBorder(border);
-  right_right.Layout()->SetBorder(border);
-  right_center.Layout()->SetBorder(border);
-  right.AddChild(&right_top);
-  right.AddChild(&right_left);
-  right.AddChild(&right_bottom);
-  right.AddChild(&right_right);
-  right.AddChild(&right_center);
-  sided_layout.SetSide(&right_center, npp::SidePanel::Center, -1);
-  sided_layout.SetSide(&right_top, npp::SidePanel::Top, 10);
-  sided_layout.SetSide(&right_left, npp::SidePanel::Left, 10);
-  sided_layout.SetSide(&right_bottom, npp::SidePanel::Bottom, 10);
-  sided_layout.SetSide(&right_right, npp::SidePanel::Right, 10);
+  npp::ScrollPanel right;
 
   auto main_panel = main_window.Panel();
   main_panel->AddChild(&left);

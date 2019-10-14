@@ -53,4 +53,32 @@ void Panel::Clear(npp::Window *window) {
   window->Printer().DrawEmptyView(view_);
 }
 
+ScrollPanel::ScrollPanel() {
+  SetupPanels();
+}
+
+void ScrollPanel::SetupPanels() {
+  auto sided_layout = new SidedLayout();
+  AddChild(&right_scroll_);
+  AddChild(&bottom_scroll_);
+  AddChild(&center_panel_);
+  sided_layout->SetSide(&right_scroll_, SidePanel::Right, 1);
+  sided_layout->SetSide(&bottom_scroll_, SidePanel::Bottom, 1);
+  sided_layout->SetSide(&center_panel_, SidePanel::Center, -1);
+  SetLayout(sided_layout);
+}
+
+void ScrollPanel::Print(npp::Window *window) {
+  Panel::Print(window);
+
+  // FIXME (amir) Temporary indicator of scroll panel
+  TextBuffer vertical_text_buffer;
+  vertical_text_buffer.FromString("Vertical Scroll");
+  window->Printer().DrawTextBuffer(vertical_text_buffer, right_scroll_.InnerView());
+
+  TextBuffer horizontal_text_buffer;
+  horizontal_text_buffer.FromString("Horizontal Scroll");
+  window->Printer().DrawTextBuffer(horizontal_text_buffer, bottom_scroll_.InnerView());
+}
+
 } // namespace npp
