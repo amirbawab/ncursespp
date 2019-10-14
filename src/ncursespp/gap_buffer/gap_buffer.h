@@ -153,6 +153,14 @@ public:
   std::vector<T> Buffer() const {
     return buffer_;
   }
+
+  /**
+   * Value size
+   * @return size
+   */
+  size_t ValueSize() const {
+    return buffer_.size() - (gap_end_ - gap_begin_);
+  }
 };
 
 }; // namespace npp

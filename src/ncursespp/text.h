@@ -7,14 +7,35 @@
 
 namespace npp {
 
-class TextBuffer : public GapBuffer<GapBuffer<char>> {
+class TextBuffer {
 public:
-  void FromString(std::string text);
+  virtual void FromString(std::string) = 0;
+  virtual const std::vector<std::vector<char>>& Value() = 0;
+};
+
+class CompressedTextBuffer : public TextBuffer {
+private:
+  std::vector<std::vector<char>> text_vector_;
+public:
+  void FromString(std::string text) override;
+  const std::vector<std::vector<char>>& Value() override;
+};
+
+class GapTextBuffer : public TextBuffer {
+private:
+  GapBuffer<GapBuffer<char>> text_buffer_;
+  std::vector<std::vector<char>> cached_text_vector_;
+  bool polluted_ = true;
+  void CacheValue();
+public:
+  void FromString(std::string text) override;
+  const std::vector<std::vector<char>>& Value() override;
+  // TODO Insert(), Remove(), etc ...
 };
 
 class Text : public Panel {
 private:
-  npp::TextBuffer text_buffer_;
+  npp::CompressedTextBuffer text_buffer_;
 public:
   explicit Text(std::string value = std::string());
   void SetValue(std::string value);

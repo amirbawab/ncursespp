@@ -23,7 +23,7 @@ protected:
   virtual void NC_AddStr(Point point, std::string text) const = 0;
   virtual void NC_AddCh(Point point, unsigned int c) const = 0;
 public:
-  void DrawTextBuffer(const npp::TextBuffer& text_buffer, View view, TextPrinterOptions options = TextPrinterOptions()) const;
+  void DrawTextBuffer(npp::TextBuffer* text_buffer, View view, TextPrinterOptions options = TextPrinterOptions()) const;
   void DrawEmptyView(View view) const;
   void DrawVLine(Point point, int length, BorderStyle style = SolidThin) const;
   void DrawHLine(Point point, int length, BorderStyle style = SolidThin) const;

@@ -13,16 +13,15 @@ void ScreenPrinter::NC_AddCh(npp::Point point, const chtype c) const {
   mvwaddch(window_->CursesWindow(), point.y, point.x, c);
 }
 
-void Printer::DrawTextBuffer(const npp::TextBuffer &text_buffer, npp::View view,
-                             npp::TextPrinterOptions options) const {
+void Printer::DrawTextBuffer(npp::TextBuffer* text_buffer, npp::View view, npp::TextPrinterOptions options) const {
   int x_begin = view.x;
   int y_begin = view.y;
   int y_end = y_begin + view.rows;
   Point text_point = {x_begin, y_begin};
-  auto text_vector = text_buffer.Value();
+  const auto &text_vector = text_buffer->Value();
   auto lines_count = text_vector.size();
   for(auto i=0; i < lines_count && text_point.y < y_end; i++) {
-    auto line_vector = text_vector[i].Value();
+    auto &line_vector = text_vector[i];
     auto line_length = line_vector.size();
     size_t text_index = 0;
     do {

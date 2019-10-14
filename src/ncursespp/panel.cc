@@ -72,13 +72,13 @@ void ScrollPanel::Print(npp::Window *window) {
   Panel::Print(window);
 
   // FIXME (amir) Temporary indicator of scroll panel
-  TextBuffer vertical_text_buffer;
+  CompressedTextBuffer vertical_text_buffer;
   vertical_text_buffer.FromString("Vertical Scroll");
-  window->Printer()->DrawTextBuffer(vertical_text_buffer, right_scroll_.InnerView());
+  window->Printer()->DrawTextBuffer(&vertical_text_buffer, right_scroll_.InnerView());
 
-  TextBuffer horizontal_text_buffer;
+  CompressedTextBuffer horizontal_text_buffer;
   horizontal_text_buffer.FromString("Horizontal Scroll");
-  window->Printer()->DrawTextBuffer(horizontal_text_buffer, bottom_scroll_.InnerView());
+  window->Printer()->DrawTextBuffer(&horizontal_text_buffer, bottom_scroll_.InnerView());
 }
 
 } // namespace npp
