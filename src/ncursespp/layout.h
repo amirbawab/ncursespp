@@ -47,11 +47,34 @@ public:
 class TileLayout : public Layout {
 private:
   Orientation orientation_ = Horizontal;
-  std::map<std::string, float> weights_;
+  std::map<Panel*, float> weights_;
   float PanelWeight(Panel* panel);
 public:
-  void SetWeight(std::string panel_id, float weight);
+  void SetWeight(Panel* panel, float weight);
   void SetOrientation(Orientation orientation) { orientation_ = orientation; }
+  void Fit(Panel* panel) override;
+};
+
+struct SidePanel {
+  enum Side : uint32_t {
+    Top     = 1u << 0u,
+    Left    = 1u << 1u,
+    Bottom  = 1u << 2u,
+    Right   = 1u << 3u,
+    Hidden  = 1u << 4u,
+    Center  = 1u << 5u,
+  } side;
+  int length;
+  SidePanel(Side s, int l) : side(s), length(l) {}
+  SidePanel() : SidePanel(Center, 0) {}
+};
+
+class SidedLayout : public Layout {
+private:
+  std::map<Panel*, SidePanel> sides_;
+  SidePanel PanelSidePanel(Panel* panel, uint32_t *side_flags);
+public:
+  void SetSide(Panel* panel, SidePanel::Side side, int length);
   void Fit(Panel* panel) override;
 };
 

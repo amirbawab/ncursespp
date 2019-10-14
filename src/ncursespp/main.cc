@@ -8,20 +8,37 @@ int main() {
   npp::Window main_window;
   main_window.Initialize();
 
+  // Border template
+  npp::Borders border;
+  border.left.style = npp::SolidThin;
+  border.top.style = npp::SolidThin;
+  border.right.style = npp::SolidThin;
+  border.bottom.style = npp::SolidThin;
+
+  npp::Panel left;
+  left.Layout()->SetBorder(border);
   npp::Button left_button("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nbbb\nccc");
-  npp::Button right_button("Right Button");
-
-  npp::Panel left("left");
-  npp::Panel right("right");
   left.AddChild(&left_button);
-  right.AddChild(&right_button);
 
-  npp::Borders left_border;
-  left_border.left.style = npp::SolidThin;
-  left_border.top.style = npp::SolidThin;
-  left_border.right.style = npp::SolidThin;
-  left_border.bottom.style = npp::SolidThin;
-  left.Layout()->SetBorder(left_border);
+  npp::Panel right;
+  npp::SidedLayout sided_layout;
+  right.SetLayout(&sided_layout);
+  npp::Panel right_top, right_left, right_bottom, right_right, right_center;
+  right_top.Layout()->SetBorder(border);
+  right_left.Layout()->SetBorder(border);
+  right_bottom.Layout()->SetBorder(border);
+  right_right.Layout()->SetBorder(border);
+  right_center.Layout()->SetBorder(border);
+  right.AddChild(&right_top);
+  right.AddChild(&right_left);
+  right.AddChild(&right_bottom);
+  right.AddChild(&right_right);
+  right.AddChild(&right_center);
+  sided_layout.SetSide(&right_center, npp::SidePanel::Center, -1);
+  sided_layout.SetSide(&right_top, npp::SidePanel::Top, 10);
+  sided_layout.SetSide(&right_left, npp::SidePanel::Left, 10);
+  sided_layout.SetSide(&right_bottom, npp::SidePanel::Bottom, 10);
+  sided_layout.SetSide(&right_right, npp::SidePanel::Right, 10);
 
   auto main_panel = main_window.Panel();
   main_panel->AddChild(&left);

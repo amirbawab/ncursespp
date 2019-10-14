@@ -6,8 +6,7 @@
 
 namespace npp {
 
-Panel::Panel(std::string id) : id_(id) {
-  // FIXME (amir) default to tile layout
+Panel::Panel(std::string id) : id_(std::move(id)) {
   layout_ = new TileLayout();
 }
 

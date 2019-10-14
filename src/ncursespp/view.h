@@ -4,10 +4,12 @@
 namespace npp {
 
 struct View {
-  int x = 0;
-  int y = 0;
-  int rows = 0;
-  int cols = 0;
+  View(int x, int y, int rows, int cols) : x(x), y(y), rows(rows), cols(cols) {}
+  View() : View(0, 0, 0, 0) {}
+  int x;
+  int y;
+  int rows;
+  int cols;
 };
 
 } // namespace npp
