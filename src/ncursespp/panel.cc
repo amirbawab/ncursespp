@@ -78,6 +78,10 @@ void ScrollPanel::SetupPanels() {
   SetLayout(sided_layout);
 }
 
+void ScrollPanel::AddChildToMainPanel(npp::Panel *panel) {
+  center_panel_.AddChild(panel);
+}
+
 void ScrollPanel::PrintInner(npp::Window *window) {
   Panel::PrintInner(buffer_window_);
 

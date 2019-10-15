@@ -20,7 +20,6 @@ void Button::SetText(std::string value) {
 }
 
 void Button::PrintInner(npp::Window* window) {
-  PrintOuter(window);
   text_.Print(window);
 }
 

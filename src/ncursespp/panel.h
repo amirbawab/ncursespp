@@ -18,8 +18,8 @@ private:
   Panel* parent_ = nullptr;
   std::vector<Panel*> children_;
   bool hidden_ = false;
-protected:
   void PrintOuter(npp::Window* window);
+protected:
   virtual void PrintInner(npp::Window* window);
 public:
   explicit Panel(std::string id = std::string());
@@ -36,7 +36,7 @@ public:
   void SetView(npp::View view) { view_ = view; }
   void Print(npp::Window* window);
   void Clear(npp::Window* window);
-  void SetHidden(bool hidden) { hidden_ = hidden_; }
+  void SetHidden(bool hidden) { hidden_ = hidden; }
   bool IsHidden() const { return hidden_; }
 };
 
@@ -50,6 +50,7 @@ private:
 public:
   ScrollPanel(int rows, int cols);
   npp::Panel* MainPanel() { return &center_panel_; }
+  void AddChildToMainPanel(Panel* panel);
   void PrintInner(npp::Window* window) override;
 };
 
