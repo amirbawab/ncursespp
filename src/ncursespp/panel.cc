@@ -28,13 +28,24 @@ bool Panel::RemoveChild(npp::Panel *panel) {
 }
 
 void Panel::Fit() {
-  layout_->Fit(this);
-  for(auto& child : children_) {
-    child->Fit();
+  if(!IsHidden()) {
+    layout_->Fit(this);
+    for(auto& child : children_) {
+      child->Fit();
+    }
+  }
+}
+
+void Panel::Print(npp::Window* window) {
+  if(!IsHidden()) {
+    PrintOuter(window);
+    PrintInner(window);
   }
 }
 
 void Panel::PrintOuter(npp::Window *window) {
+  // We assume that panel has already been check
+  // if it's hidden or not
   window->Printer()->DrawBorder(layout_->Border(), layout_->MarginView(this));
 }
 
@@ -42,8 +53,7 @@ npp::View Panel::InnerView() {
   layout_->PaddingView(this);
 }
 
-void Panel::Print(npp::Window* window) {
-  PrintOuter(window);
+void Panel::PrintInner(npp::Window *window) {
   for(auto& child : children_) {
     child->Print(window);
   }
@@ -68,8 +78,8 @@ void ScrollPanel::SetupPanels() {
   SetLayout(sided_layout);
 }
 
-void ScrollPanel::Print(npp::Window *window) {
-  Panel::Print(buffer_window_);
+void ScrollPanel::PrintInner(npp::Window *window) {
+  Panel::PrintInner(buffer_window_);
 
   // FIXME (amir) Temporary indicator of scroll panel
   CompressedTextBuffer vertical_text_buffer;

@@ -19,7 +19,7 @@ void Button::SetText(std::string value) {
   text_.SetValue(std::move(value));
 }
 
-void Button::Print(npp::Window* window) {
+void Button::PrintInner(npp::Window* window) {
   PrintOuter(window);
   text_.Print(window);
 }

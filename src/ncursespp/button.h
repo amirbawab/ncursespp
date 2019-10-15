@@ -12,7 +12,7 @@ private:
 public:
   explicit Button(std::string text = std::string());
   void SetText(std::string);
-  void Print(npp::Window* window) override;
+  void PrintInner(npp::Window* window) override;
 };
 
 } // namespace npp

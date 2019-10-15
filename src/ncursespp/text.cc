@@ -63,7 +63,7 @@ void Text::SetValue(std::string value) {
   text_buffer_.FromString(std::move(value));
 }
 
-void Text::Print(npp::Window* window) {
+void Text::PrintInner(npp::Window* window) {
   auto inner_view = InnerView();
   window->Printer()->DrawTextBuffer(&text_buffer_, inner_view);
 }

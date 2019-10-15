@@ -41,7 +41,7 @@ private:
 public:
   explicit Text(std::string value = std::string());
   void SetValue(std::string value);
-  void Print(npp::Window* window) override;
+  void PrintInner(npp::Window* window) override;
 };
 
 } // namespace npp

@@ -17,13 +17,15 @@ private:
   npp::Layout* layout_ = nullptr;
   Panel* parent_ = nullptr;
   std::vector<Panel*> children_;
+  bool hidden_ = false;
 protected:
   void PrintOuter(npp::Window* window);
+  virtual void PrintInner(npp::Window* window);
 public:
   explicit Panel(std::string id = std::string());
   std::string Id() const { return id_; }
   std::string SetId(std::string id) { id_ = std::move(id); }
-  virtual npp::Layout* Layout() const { return layout_; }
+  npp::Layout* Layout() const { return layout_; }
   void SetLayout(npp::Layout* layout) { layout_ = layout; }
   void AddChild(Panel* panel);
   bool RemoveChild(Panel* panel);
@@ -32,8 +34,10 @@ public:
   npp::View View() const { return view_; }
   npp::View InnerView();
   void SetView(npp::View view) { view_ = view; }
-  virtual void Print(npp::Window* window); // TODO (amir) maybe promote to PrintWriter class?
+  void Print(npp::Window* window);
   void Clear(npp::Window* window);
+  void SetHidden(bool hidden) { hidden_ = hidden_; }
+  bool IsHidden() const { return hidden_; }
 };
 
 class ScrollPanel : public Panel {
@@ -46,7 +50,7 @@ private:
 public:
   ScrollPanel(int rows, int cols);
   npp::Panel* MainPanel() { return &center_panel_; }
-  void Print(npp::Window* window) override;
+  void PrintInner(npp::Window* window) override;
 };
 
 } // namespace nppp

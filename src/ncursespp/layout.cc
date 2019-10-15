@@ -127,22 +127,24 @@ void SidedLayout::Fit(npp::Panel *panel) {
       }
       default:
         DCHECK_EQ(child_side_panel.side, SidePanel::Side::Hidden);
+        children[i]->SetHidden(true);
+        break;
     }
   }
 
   // Fit side panels. Order is important!
   auto panel_inner_view = panel->InnerView();
-  View hidden_view = View();
   if(top_panel) {
     auto top_panel_length = sides_[top_panel].length;
     if(panel_inner_view.rows >= top_panel_length && panel_inner_view.cols > 0) {
       auto top_panel_view = panel_inner_view;
       top_panel_view.rows = top_panel_length;
       top_panel->SetView(top_panel_view);
+      top_panel->SetHidden(false);
       panel_inner_view.y += top_panel_length;
       panel_inner_view.rows -= top_panel_length;
     } else {
-      top_panel->SetView(hidden_view);
+      top_panel->SetHidden(true);
     }
   }
 
@@ -153,9 +155,10 @@ void SidedLayout::Fit(npp::Panel *panel) {
       bottom_panel_view.rows = bottom_panel_length;
       bottom_panel_view.y += panel_inner_view.rows - bottom_panel_length;
       bottom_panel->SetView(bottom_panel_view);
+      bottom_panel->SetHidden(false);
       panel_inner_view.rows -= bottom_panel_length;
     } else {
-      bottom_panel->SetView(hidden_view);
+      bottom_panel->SetHidden(true);
     }
   }
 
@@ -165,10 +168,11 @@ void SidedLayout::Fit(npp::Panel *panel) {
       auto left_panel_view = panel_inner_view;
       left_panel_view.cols = left_panel_length;
       left_panel->SetView(left_panel_view);
+      left_panel->SetHidden(false);
       panel_inner_view.x += left_panel_length;
       panel_inner_view.cols -= left_panel_length;
     } else {
-      left_panel->SetView(hidden_view);
+      left_panel->SetHidden(true);
     }
   }
 
@@ -179,17 +183,19 @@ void SidedLayout::Fit(npp::Panel *panel) {
       right_panel_view.cols = right_panel_length;
       right_panel_view.x += panel_inner_view.cols - right_panel_length;
       right_panel->SetView(right_panel_view);
+      right_panel->SetHidden(false);
       panel_inner_view.cols -= right_panel_length;
     } else {
-      right_panel->SetView(hidden_view);
+      right_panel->SetHidden(true);
     }
   }
 
   if(center_panel) {
     if(panel_inner_view.rows > 0 && panel_inner_view.cols > 0) {
       center_panel->SetView(panel_inner_view);
+      center_panel->SetHidden(false);
     } else {
-      center_panel->SetView(hidden_view);
+      center_panel->SetHidden(true);
     }
   }
 }
