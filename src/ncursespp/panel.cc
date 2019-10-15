@@ -53,7 +53,7 @@ void Panel::Clear(npp::Window *window) {
   window->Printer()->DrawEmptyView(view_);
 }
 
-ScrollPanel::ScrollPanel() {
+ScrollPanel::ScrollPanel(int rows, int cols) : buffer_window_(new BufferWindow({0, 0, rows, cols})) {
   SetupPanels();
 }
 
@@ -69,16 +69,20 @@ void ScrollPanel::SetupPanels() {
 }
 
 void ScrollPanel::Print(npp::Window *window) {
-  Panel::Print(window);
+  Panel::Print(buffer_window_);
 
   // FIXME (amir) Temporary indicator of scroll panel
   CompressedTextBuffer vertical_text_buffer;
   vertical_text_buffer.FromString("Vertical Scroll");
   window->Printer()->DrawTextBuffer(&vertical_text_buffer, right_scroll_.InnerView());
-
   CompressedTextBuffer horizontal_text_buffer;
   horizontal_text_buffer.FromString("Horizontal Scroll");
   window->Printer()->DrawTextBuffer(&horizontal_text_buffer, bottom_scroll_.InnerView());
+
+  // Use buffer on all descendant
+  center_panel_.Print(buffer_window_);
+  // Copy buffer to parent parent window
+  window->Copy(buffer_window_, center_panel_.View());
 }
 
 } // namespace npp

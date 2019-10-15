@@ -39,6 +39,10 @@ void ScreenWindow::Clear() {
   panel_.Clear(this);
 }
 
+void ScreenWindow::Copy(npp::BufferWindow *buffer_window, npp::View view) {
+  // TODO (amir) to implement
+}
+
 BufferWindow::BufferWindow(npp::View view, npp::WindowOptions options) :
     Window(options, new BufferPrinter(this)), view_(view), window_buffer_(0) {
   SetupWindow();
@@ -64,6 +68,15 @@ std::vector<char>& BufferWindow::RowAt(int y) {
   DCHECK_GE(y, 0);
   DCHECK_LT(y, window_buffer_.size());
   return window_buffer_[y];
+}
+
+void BufferWindow::SetPoint(npp::Point point) {
+  view_.x = point.x;
+  view_.y = point.y;
+}
+
+void BufferWindow::Copy(npp::BufferWindow *buffer_window, npp::View view) {
+  // TODO (amir) to implement
 }
 
 } // namespace npp

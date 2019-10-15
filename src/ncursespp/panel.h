@@ -8,6 +8,7 @@
 namespace npp {
 
 class Window;
+class BufferWindow;
 class Layout;
 class Panel {
 private:
@@ -40,11 +41,12 @@ private:
   Panel right_scroll_;
   Panel bottom_scroll_;
   Panel center_panel_;
+  npp::BufferWindow* buffer_window_;
   void SetupPanels();
 public:
-  ScrollPanel();
+  ScrollPanel(int rows, int cols);
   npp::Panel* MainPanel() { return &center_panel_; }
-  void Print(npp::Window* window);
+  void Print(npp::Window* window) override;
 };
 
 } // namespace nppp

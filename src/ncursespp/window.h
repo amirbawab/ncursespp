@@ -21,6 +21,7 @@ public:
   const npp::Printer* Printer() const { return printer_; }
   const WindowOptions& Options() const { return options_; }
   virtual npp::View View() const = 0;
+  virtual void Copy(BufferWindow* buffer_window, npp::View view) = 0;
 };
 
 class ScreenWindow : public Window {
@@ -39,6 +40,7 @@ public:
   void Print();
   void Clear();
   WINDOW* CursesWindow() const { return window_; }
+  void Copy(BufferWindow* buffer_window, npp::View view) override;
 };
 
 class BufferWindow : public Window {
@@ -51,6 +53,8 @@ public:
   npp::View View() const override { return view_; };
   char& CharAt(Point point);
   std::vector<char>& RowAt(int y);
+  void SetPoint(Point point);
+  void Copy(BufferWindow* buffer_window, npp::View view) override;
 };
 
 } // namespace npp

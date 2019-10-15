@@ -20,7 +20,7 @@ int main() {
   npp::Button left_button("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nbbb\nccc");
   left.AddChild(&left_button);
 
-  npp::ScrollPanel right;
+  npp::ScrollPanel right(100, 100);
 
   auto main_panel = main_window.Panel();
   main_panel->AddChild(&left);
