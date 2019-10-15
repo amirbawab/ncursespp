@@ -13,6 +13,19 @@ void ScreenPrinter::NC_AddCh(npp::Point point, const chtype c) const {
   mvwaddch(window_->CursesWindow(), point.y, point.x, c);
 }
 
+void BufferPrinter::NC_AddStr(npp::Point point, std::string text) const {
+  std::vector<char>& row = window_->RowAt(point.y);
+  auto string_begin = row.begin() + point.x;
+  auto string_end = string_begin + text.size();
+  // String should not exceed the buffer size
+  DCHECK_LE(string_end, row.end());
+  std::copy(text.begin(), text.end(), string_begin);
+}
+
+void BufferPrinter::NC_AddCh(npp::Point point, unsigned int c) const {
+  window_->CharAt(point) = static_cast<char>(c);
+}
+
 void Printer::DrawTextBuffer(npp::TextBuffer* text_buffer, npp::View view, npp::TextPrinterOptions options) const {
   int x_begin = view.x;
   int y_begin = view.y;

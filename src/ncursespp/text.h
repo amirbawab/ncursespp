@@ -7,6 +7,8 @@
 
 namespace npp {
 
+// TODO (amir) Experiment with wchar_t instead of char
+
 class TextBuffer {
 public:
   virtual void FromString(std::string) = 0;

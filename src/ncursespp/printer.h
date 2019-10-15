@@ -18,6 +18,7 @@ struct TextPrinterOptions {
 };
 
 class ScreenWindow;
+class BufferWindow;
 class Printer {
 protected:
   virtual void NC_AddStr(Point point, std::string text) const = 0;
@@ -42,6 +43,16 @@ protected:
   void NC_AddCh(Point point, unsigned int c) const override;
 public:
   explicit ScreenPrinter(npp::ScreenWindow* window) : window_(window) {}
+};
+
+class BufferPrinter : public Printer {
+private:
+  npp::BufferWindow* window_;
+protected:
+  void NC_AddStr(Point point, std::string text) const override;
+  void NC_AddCh(Point point, unsigned int c) const override;
+public:
+  explicit BufferPrinter(npp::BufferWindow* window) : window_(window) {}
 };
 
 } // namespace npp
