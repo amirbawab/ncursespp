@@ -40,7 +40,8 @@ void ScreenWindow::Clear() {
 }
 
 void ScreenWindow::Copy(npp::BufferWindow *buffer_window, npp::View view) {
-  // TODO (amir) to implement
+  // TODO (amir) to implement!
+  printf("Copying!\n\r");
 }
 
 BufferWindow::BufferWindow(npp::View view, npp::WindowOptions options) :
