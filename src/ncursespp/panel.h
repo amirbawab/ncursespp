@@ -21,6 +21,7 @@ private:
   void PrintOuter(npp::Window* window);
 protected:
   virtual void PrintInner(npp::Window* window);
+  virtual void FitInner();
 public:
   explicit Panel(std::string id = std::string());
   std::string Id() const { return id_; }
@@ -47,11 +48,13 @@ private:
   Panel center_panel_;
   npp::BufferWindow* buffer_window_;
   void SetupPanels();
+protected:
+  void PrintInner(npp::Window* window) override;
+  void FitInner() override;
 public:
   ScrollPanel(int rows, int cols);
   npp::Panel* MainPanel() { return &center_panel_; }
   void AddChildToMainPanel(Panel* panel);
-  void PrintInner(npp::Window* window) override;
 };
 
 } // namespace nppp

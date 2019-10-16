@@ -29,10 +29,14 @@ bool Panel::RemoveChild(npp::Panel *panel) {
 
 void Panel::Fit() {
   if(!IsHidden()) {
-    layout_->Fit(this);
-    for(auto& child : children_) {
-      child->Fit();
-    }
+    FitInner();
+  }
+}
+
+void Panel::FitInner() {
+  layout_->Fit(this);
+  for(auto& child : children_) {
+    child->Fit();
   }
 }
 
@@ -97,6 +101,12 @@ void ScrollPanel::PrintInner(npp::Window *window) {
   center_panel_.Print(buffer_window_);
   // Copy buffer to parent parent window
   window->Copy(buffer_window_, center_panel_.View());
+}
+
+void ScrollPanel::FitInner() {
+  Panel::FitInner();
+  auto panel_view = this->View();
+  buffer_window_->SetPoint({panel_view.x, panel_view.y});
 }
 
 } // namespace npp
