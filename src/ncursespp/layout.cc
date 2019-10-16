@@ -209,6 +209,7 @@ npp::View FixedLayout::PanelFixedView(npp::Panel *panel) {
     return fixed_panels_[panel];
   }
   // Default, view is non-existent
+  // TODO Replace with INVISIBLE_VIEW
   return {0, 0, 0, 0};
 }
 

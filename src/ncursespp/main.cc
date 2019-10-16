@@ -22,8 +22,8 @@ int main() {
 
   npp::ScrollPanel right(100, 100);
   // FIXME Fix case of "hello world\n\r"
-  npp::Button right_button("hello world");
-  right.AddChildToMainPanel(&right_button);
+  npp::Text right_text("hello world");
+  right.AddChildToMainPanel(&right_text);
 
   auto main_panel = main_window.Panel();
   main_panel->AddChild(&left);

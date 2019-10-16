@@ -194,4 +194,8 @@ void Printer::DrawBorder(npp::Borders borders, npp::View view) const {
   DrawHLine({x_begin+1, y_last}, x_last - x_begin - 1, borders.left.style); // bottom
 }
 
+void Printer::DrawString(npp::Point point, std::string text) const {
+  NC_AddStr(point, std::move(text));
+}
+
 } // namespace npp

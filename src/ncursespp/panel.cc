@@ -87,24 +87,14 @@ void ScrollPanel::SetupPanels() {
   fixed_layout_ = new FixedLayout();
   center_panel_.AddChild(&window_panel_);
   center_panel_.SetLayout(fixed_layout_);
-
-  // FIXME (amir) temporary panel indicator
-  {
-    Borders solid_borders;
-    solid_borders.top.style = SolidThin;
-    solid_borders.left.style = SolidThin;
-    solid_borders.bottom.style = SolidThin;
-    solid_borders.right.style = SolidThin;
-    center_panel_.Layout()->SetBorder(solid_borders);
-    window_panel_.Layout()->SetBorder(solid_borders);
-  }
 }
 
 void ScrollPanel::AddChildToMainPanel(npp::Panel *panel) {
-  center_panel_.AddChild(panel);
+  MainPanel()->AddChild(panel);
 }
 
 void ScrollPanel::PrintInner(npp::Window *window) {
+  // Print right and bottom scroll panels
   right_scroll_.Print(window);
   bottom_scroll_.Print(window);
 
@@ -129,22 +119,30 @@ void ScrollPanel::PrintInner(npp::Window *window) {
   }
 
   // Copy buffer to parent parent window
-  window->Copy(buffer_window_, center_panel_.View());
+  window->Copy(buffer_window_, center_panel_.InnerView());
 }
 
 void ScrollPanel::FitInner() {
+  // Layout children of this panel (center, right and bottom)
+  Layout()->Fit(this);
+
   // TODO (amir) Find a better way to set this (maybe a ScrollLayout extending SidedLayout?)
   // TODO (amir) Need to consider moving the window vertically and horizontally
   {
     // Configure layouts
-    auto panel_inner_view = center_panel_.InnerView();
+    auto center_panel_inner_view = center_panel_.InnerView();
+    buffer_window_->SetPoint({center_panel_inner_view.x, center_panel_inner_view.y});
     auto window_view = buffer_window_->View();
-    buffer_window_->SetPoint({panel_inner_view.x, panel_inner_view.y});
-    fixed_layout_->SetFixedView(&window_panel_, {panel_inner_view.x, panel_inner_view.y,
-                                                 std::min(window_view.rows, panel_inner_view.rows),
-                                                 std::min(window_view.cols, panel_inner_view.cols)});
+    fixed_layout_->SetFixedView(&window_panel_, {center_panel_inner_view.x, center_panel_inner_view.y,
+                                                 std::min(window_view.rows, center_panel_inner_view.rows),
+                                                 std::min(window_view.cols, center_panel_inner_view.cols)});
   }
-  Panel::FitInner();
+
+  // Run Fit() on each of the children
+  // in order to fit their children
+  for(auto &child : Children()) {
+    child->Fit();
+  }
 }
 
 } // namespace npp

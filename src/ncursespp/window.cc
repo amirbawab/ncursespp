@@ -40,8 +40,24 @@ void ScreenWindow::Clear() {
 }
 
 void ScreenWindow::Copy(npp::BufferWindow *buffer_window, npp::View view) {
-  // TODO (amir) to implement!
-  printf("Copying!\n\r");
+  auto screen_windwow_view = this->View();
+  auto buffer_window_view = buffer_window->View();
+  npp::View panel_buffer_view = ViewIntersection(buffer_window_view, view);
+  npp::View screen_panel_buffer_view = ViewIntersection(screen_windwow_view, panel_buffer_view);
+  auto x_begin = screen_panel_buffer_view.x - buffer_window_view.x;
+  auto y_begin = screen_panel_buffer_view.y - buffer_window_view.y;
+  auto x_end = x_begin + screen_panel_buffer_view.cols;
+  auto y_end = y_begin + screen_panel_buffer_view.rows;
+
+  DCHECK_GE(x_begin, 0);
+  DCHECK_GE(y_begin, 0);
+
+  for(auto y=y_begin; y < y_end; y++) {
+    auto &row = buffer_window->RowAt(y);
+    auto str = std::string(row.begin() + x_begin, row.begin() + x_end);
+    Printer()->DrawString({screen_panel_buffer_view.x, screen_panel_buffer_view.y}, str);
+    screen_panel_buffer_view.y++;
+  }
 }
 
 BufferWindow::BufferWindow(npp::View view, npp::WindowOptions options) :
