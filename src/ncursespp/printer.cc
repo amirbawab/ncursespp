@@ -35,12 +35,15 @@ void Printer::DrawTextBuffer(npp::TextBuffer* text_buffer, npp::View view, npp::
   const auto &text_vector = text_buffer->Value();
   auto lines_count = text_vector.size();
   for(auto i=0; i < lines_count && text_point.y < y_end; i++) {
-    auto &line_vector = text_vector[i];
+    const std::vector<char32_t> &line_vector = text_vector[i];
     auto line_length = line_vector.size();
     size_t text_index = 0;
     do {
       size_t end_line = std::min(text_index + view.cols, line_length);
-      NC_AddStr(text_point, std::string(line_vector.begin() + text_index, line_vector.begin() + end_line));
+      const std::vector<char32_t> line_sub_vector(line_vector.begin() + text_index, line_vector.begin() + end_line);
+      std::string line_sub_vector_str;
+      npp::Char32VectorToString(line_sub_vector, line_sub_vector_str);
+      NC_AddStr(text_point, line_sub_vector_str);
       text_index = end_line;
       text_point.y++;
     } while (options.wrap && text_index < line_length);
