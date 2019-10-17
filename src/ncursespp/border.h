@@ -5,7 +5,7 @@ namespace npp {
 
 // (name, horizontal_side, vertical_side, top_left, top_right, bottom_left, bottom_right)
 #define BORDER_STYLE_LIST(V)  \
-  V(SolidThin, "\u2500", "\u2502", "\u250c", "\u2510", "\u2514", "\u2518")
+  V(SolidThin, U"\u2500", U"\u2502", U"\u250c", U"\u2510", U"\u2514", U"\u2518")
 
 #define BORDER_STYLE_ENUM(name, hside, vside, tl, tr, bl, br) \
   name,

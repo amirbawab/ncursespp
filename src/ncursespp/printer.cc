@@ -5,15 +5,17 @@
 
 namespace npp {
 
-void ScreenPrinter::NC_AddStr(npp::Point point, std::string text) const {
-  mvwaddstr(window_->CursesWindow(), point.y, point.x, text.c_str());
+void ScreenPrinter::NC_AddStr(npp::Point point, std::u32string text) const {
+  std::string text_str;
+  Char32VectorToString(std::vector<char32_t>(text.begin(), text.end()), text_str);
+  mvwaddstr(window_->CursesWindow(), point.y, point.x, text_str.c_str());
 }
 
 void ScreenPrinter::NC_AddCh(npp::Point point, const chtype c) const {
   mvwaddch(window_->CursesWindow(), point.y, point.x, c);
 }
 
-void BufferPrinter::NC_AddStr(npp::Point point, std::string text) const {
+void BufferPrinter::NC_AddStr(npp::Point point, std::u32string text) const {
   auto window_view = window_->View();
   Point relative_point = {point.x - window_view.x, point.y - window_view.y};
   DCHECK_GE(relative_point.x, 0);
@@ -41,8 +43,7 @@ void Printer::DrawTextBuffer(npp::TextBuffer* text_buffer, npp::View view, npp::
     do {
       size_t end_line = std::min(text_index + view.cols, line_length);
       const std::vector<char32_t> line_sub_vector(line_vector.begin() + text_index, line_vector.begin() + end_line);
-      std::string line_sub_vector_str;
-      npp::Char32VectorToString(line_sub_vector, line_sub_vector_str);
+      std::u32string line_sub_vector_str(line_sub_vector.begin(), line_sub_vector.end());
       NC_AddStr(text_point, line_sub_vector_str);
       text_index = end_line;
       text_point.y++;
@@ -197,7 +198,7 @@ void Printer::DrawBorder(npp::Borders borders, npp::View view) const {
   DrawHLine({x_begin+1, y_last}, x_last - x_begin - 1, borders.left.style); // bottom
 }
 
-void Printer::DrawString(npp::Point point, std::string text) const {
+void Printer::DrawString(npp::Point point, std::u32string text) const {
   NC_AddStr(point, std::move(text));
 }
 

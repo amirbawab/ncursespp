@@ -21,7 +21,7 @@ class ScreenWindow;
 class BufferWindow;
 class Printer {
 protected:
-  virtual void NC_AddStr(Point point, std::string text) const = 0;
+  virtual void NC_AddStr(Point point, std::u32string text) const = 0;
   virtual void NC_AddCh(Point point, unsigned int c) const = 0;
 public:
   void DrawTextBuffer(npp::TextBuffer* text_buffer, View view, TextPrinterOptions options = TextPrinterOptions()) const;
@@ -33,14 +33,14 @@ public:
   void DrawBLCorner(Point point, BorderStyle style = SolidThin) const;
   void DrawBRCorner(Point point, BorderStyle style = SolidThin) const;
   void DrawBorder(Borders borders, View view) const;
-  void DrawString(Point point, std::string text) const;
+  void DrawString(Point point, std::u32string text) const;
 };
 
 class ScreenPrinter : public Printer {
 private:
   npp::ScreenWindow* window_;
 protected:
-  void NC_AddStr(Point point, std::string text) const override;
+  void NC_AddStr(Point point, std::u32string text) const override;
   void NC_AddCh(Point point, unsigned int c) const override;
 public:
   explicit ScreenPrinter(npp::ScreenWindow* window) : window_(window) {}
@@ -50,7 +50,7 @@ class BufferPrinter : public Printer {
 private:
   npp::BufferWindow* window_;
 protected:
-  void NC_AddStr(Point point, std::string text) const override;
+  void NC_AddStr(Point point, std::u32string text) const override;
   void NC_AddCh(Point point, unsigned int c) const override;
 public:
   explicit BufferPrinter(npp::BufferWindow* window) : window_(window) {}
