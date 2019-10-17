@@ -197,9 +197,8 @@ void Printer::DrawBorder(npp::Borders borders, npp::View view) const {
   DrawHLine({x_begin+1, y_last}, x_last - x_begin - 1, borders.left.style); // bottom
 }
 
-void Printer::DrawString(npp::Point point, std::u32string text) const {
-  // FIXME Change argument to vector<char32_t>
-  NC_AddStr(point, std::vector<char32_t>(text.begin(), text.end()));
+void Printer::DrawChar32Vector(npp::Point point, const std::vector<char32_t> &text) const {
+  NC_AddStr(point, text);
 }
 
 } // namespace npp

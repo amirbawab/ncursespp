@@ -33,7 +33,7 @@ public:
   void DrawBLCorner(Point point, BorderStyle style = SolidThin) const;
   void DrawBRCorner(Point point, BorderStyle style = SolidThin) const;
   void DrawBorder(Borders borders, View view) const;
-  void DrawString(Point point, std::u32string text) const;
+  void DrawChar32Vector(Point point, const std::vector<char32_t>& text) const;
 };
 
 class ScreenPrinter : public Printer {
