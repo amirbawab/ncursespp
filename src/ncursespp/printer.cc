@@ -5,9 +5,9 @@
 
 namespace npp {
 
-void ScreenPrinter::NC_AddStr(npp::Point point, std::u32string text) const {
+void ScreenPrinter::NC_AddStr(npp::Point point, const std::vector<char32_t>& text) const {
   std::string text_str;
-  Char32VectorToString(std::vector<char32_t>(text.begin(), text.end()), text_str);
+  Char32VectorToString(text, text_str);
   mvwaddstr(window_->CursesWindow(), point.y, point.x, text_str.c_str());
 }
 
@@ -15,7 +15,7 @@ void ScreenPrinter::NC_AddCh(npp::Point point, const chtype c) const {
   mvwaddch(window_->CursesWindow(), point.y, point.x, c);
 }
 
-void BufferPrinter::NC_AddStr(npp::Point point, std::u32string text) const {
+void BufferPrinter::NC_AddStr(npp::Point point, const std::vector<char32_t>& text) const {
   auto window_view = window_->View();
   Point relative_point = {point.x - window_view.x, point.y - window_view.y};
   DCHECK_GE(relative_point.x, 0);
@@ -43,8 +43,7 @@ void Printer::DrawTextBuffer(npp::TextBuffer* text_buffer, npp::View view, npp::
     do {
       size_t end_line = std::min(text_index + view.cols, line_length);
       const std::vector<char32_t> line_sub_vector(line_vector.begin() + text_index, line_vector.begin() + end_line);
-      std::u32string line_sub_vector_str(line_sub_vector.begin(), line_sub_vector.end());
-      NC_AddStr(text_point, line_sub_vector_str);
+      NC_AddStr(text_point, line_sub_vector);
       text_index = end_line;
       text_point.y++;
     } while (options.wrap && text_index < line_length);
@@ -67,7 +66,7 @@ void Printer::DrawEmptyView(npp::View view) const {
 #define BORDER_STYLE_VERTICAL_DRAW(name, hside, vside, tl, tr, bl, br) \
   case name: \
     for(int y = y_begin; y < y_end; y++) { \
-      NC_AddStr({point.x, y}, vside); \
+      NC_AddStr({point.x, y}, {vside}); \
     } \
     break;
 
@@ -88,7 +87,7 @@ void Printer::DrawVLine(npp::Point point, int length, BorderStyle style) const {
 #define BORDER_STYLE_HORIZONTAL_DRAW(name, hside, vside, tl, tr, bl, br) \
   case name: \
     for(int x = x_begin; x < x_end; x++) { \
-      NC_AddStr({x, point.y}, hside); \
+      NC_AddStr({x, point.y}, {hside}); \
     } \
     break;
 
@@ -106,7 +105,7 @@ void Printer::DrawHLine(npp::Point point, int length, npp::BorderStyle style) co
 
 #define BORDER_STYLE_TL_DRAW(name, hside, vside, tl, tr, bl, br) \
   case name: \
-    NC_AddStr({point.x, point.y}, tl); \
+    NC_AddStr({point.x, point.y}, {tl}); \
     break;
 
 void Printer::DrawTLCorner(npp::Point point, npp::BorderStyle style) const {
@@ -121,7 +120,7 @@ void Printer::DrawTLCorner(npp::Point point, npp::BorderStyle style) const {
 
 #define BORDER_STYLE_TR_DRAW(name, hside, vside, tl, tr, bl, br) \
   case name: \
-    NC_AddStr({point.x, point.y}, tr); \
+    NC_AddStr({point.x, point.y}, {tr}); \
     break;
 
 void Printer::DrawTRCorner(npp::Point point, npp::BorderStyle style) const {
@@ -136,7 +135,7 @@ void Printer::DrawTRCorner(npp::Point point, npp::BorderStyle style) const {
 
 #define BORDER_STYLE_BL_DRAW(name, hside, vside, tl, tr, bl, br) \
   case name: \
-    NC_AddStr({point.x, point.y}, bl); \
+    NC_AddStr({point.x, point.y}, {bl}); \
     break;
 
 void Printer::DrawBLCorner(npp::Point point, npp::BorderStyle style) const {
@@ -151,7 +150,7 @@ void Printer::DrawBLCorner(npp::Point point, npp::BorderStyle style) const {
 
 #define BORDER_STYLE_BR_DRAW(name, hside, vside, tl, tr, bl, br) \
   case name: \
-    NC_AddStr({point.x, point.y}, br); \
+    NC_AddStr({point.x, point.y}, {br}); \
     break;
 
 void Printer::DrawBRCorner(npp::Point point, npp::BorderStyle style) const {
@@ -199,7 +198,8 @@ void Printer::DrawBorder(npp::Borders borders, npp::View view) const {
 }
 
 void Printer::DrawString(npp::Point point, std::u32string text) const {
-  NC_AddStr(point, std::move(text));
+  // FIXME Change argument to vector<char32_t>
+  NC_AddStr(point, std::vector<char32_t>(text.begin(), text.end()));
 }
 
 } // namespace npp
