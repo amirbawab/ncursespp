@@ -27,7 +27,7 @@ protected:
 public:
   explicit Panel(std::string id = std::string());
   std::string Id() const { return id_; }
-  std::string SetId(std::string id) { id_ = std::move(id); }
+  void SetId(std::string id) { id_ = std::move(id); }
   npp::Layout* Layout() const { return layout_; }
   void SetLayout(npp::Layout* layout) { layout_ = layout; }
   void AddChild(Panel* panel);

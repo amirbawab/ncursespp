@@ -20,12 +20,12 @@ void GapTextBuffer::FromString(std::u32string text) {
   while (text_index < text_length) {
     GapBuffer<char32_t > line_buffer;
     size_t new_line_index = text.find('\n', text_index);
-    size_t end_line = new_line_index != std::string::npos ? new_line_index : text_length;
+    size_t end_line = new_line_index != std::u32string::npos ? new_line_index : text_length;
     std::u32string line_text = text.substr(text_index, end_line - text_index);
     std::vector<char32_t> line_chars(line_text.begin(), line_text.end());
     line_buffer.Insert(line_chars);
     text_buffer_.Insert({line_buffer});
-    text_index = end_line + (new_line_index != std::string::npos ? 1 : 0);
+    text_index = end_line + (new_line_index != std::u32string::npos ? 1 : 0);
   }
 }
 
@@ -43,11 +43,11 @@ void CompressedTextBuffer::FromString(std::u32string text) {
   size_t text_index = 0;
   while (text_index < text_length) {
     size_t new_line_index = text.find('\n', text_index);
-    size_t end_line = new_line_index != std::string::npos ? new_line_index : text_length;
+    size_t end_line = new_line_index != std::u32string::npos ? new_line_index : text_length;
     std::u32string line_text = text.substr(text_index, end_line - text_index);
     std::vector<char32_t > line_chars(line_text.begin(), line_text.end());
     text_vector_.push_back(line_chars);
-    text_index = end_line + (new_line_index != std::string::npos ? 1 : 0);
+    text_index = end_line + (new_line_index != std::u32string::npos ? 1 : 0);
   }
 }
 
