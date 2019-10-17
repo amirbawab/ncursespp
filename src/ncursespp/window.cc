@@ -53,9 +53,11 @@ void ScreenWindow::Copy(npp::BufferWindow *buffer_window, npp::View view) {
   DCHECK_GE(y_begin, 0);
 
   for(auto y=y_begin; y < y_end; y++) {
-    auto &row = buffer_window->RowAt(y);
-    auto str = std::string(row.begin() + x_begin, row.begin() + x_end);
-    Printer()->DrawString({screen_panel_buffer_view.x, screen_panel_buffer_view.y}, str);
+    const std::vector<char32_t> &row = buffer_window->RowAt(y);
+    std::vector<char32_t> sub_row(row.begin() + x_begin, row.begin() + x_end);
+    std::string sub_row_str;
+    Char32VectorToString(sub_row, sub_row_str);
+    Printer()->DrawString({screen_panel_buffer_view.x, screen_panel_buffer_view.y}, sub_row_str);
     screen_panel_buffer_view.y++;
   }
 }
