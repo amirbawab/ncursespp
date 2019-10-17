@@ -65,6 +65,9 @@ void Panel::PrintInner(npp::Window *window) {
 
 void Panel::Clear(npp::Window *window) {
   window->Printer()->DrawEmptyView(view_);
+  for(auto& child : children_) {
+    child->Clear(window);
+  }
 }
 
 ScrollPanel::ScrollPanel(int rows, int cols) : buffer_window_(new BufferWindow({0, 0, rows, cols})) {
@@ -142,6 +145,15 @@ void ScrollPanel::FitInner() {
   // in order to fit their children
   for(auto &child : Children()) {
     child->Fit();
+  }
+}
+
+void ScrollPanel::Clear(npp::Window *window) {
+  window->Printer()->DrawEmptyView(this->View());
+  buffer_window_->Printer()->DrawEmptyView(this->View());
+  auto children = Children();
+  for(auto& child : children) {
+    child->Clear(buffer_window_);
   }
 }
 

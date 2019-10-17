@@ -38,9 +38,9 @@ public:
   npp::View InnerView();
   void SetView(npp::View view) { view_ = view; }
   void Print(npp::Window* window);
-  void Clear(npp::Window* window);
   void SetHidden(bool hidden) { hidden_ = hidden; }
   bool IsHidden() const { return hidden_; }
+  virtual void Clear(npp::Window* window);
 };
 
 class ScrollPanel : public Panel {
@@ -64,6 +64,7 @@ public:
   ScrollPanel(int rows, int cols);
   npp::Panel* MainPanel() { return &window_panel_; }
   void AddChildToMainPanel(Panel* panel);
+  void Clear(npp::Window* window);
 };
 
 } // namespace nppp
