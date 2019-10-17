@@ -34,7 +34,20 @@ do {                                      \
 
 namespace npp {
 
-std::string Char32ToString(char32_t codepoint);
+/**
+ * Convert char32 to string
+ * Original code: https://stackoverflow.com/a/19968992/3435918
+ * @param codepoint
+ * @return string
+ */
+void Char32ToString(char32_t codepoint, std::string& out);
+
+/**
+ * Convert vector of char32 to string
+ * @param codepoints
+ * @param out
+ */
+void Char32VectorToString(const std::vector<char32_t>& codepoints, std::string& out);
 
 }
 

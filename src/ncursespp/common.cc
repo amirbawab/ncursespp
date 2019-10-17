@@ -1,8 +1,8 @@
 #include <ncursespp/common.h>
 
 namespace npp {
-std::string Char32ToString(char32_t codepoint) {
-  std::string out;
+
+void Char32ToString(char32_t codepoint, std::string& out) {
   if (codepoint <= 0x7f) {
     out.append(1, static_cast<char>(codepoint));
   } else if (codepoint <= 0x7ff) {
@@ -18,6 +18,12 @@ std::string Char32ToString(char32_t codepoint) {
     out.append(1, static_cast<char>(0x80 | ((codepoint >> 6) & 0x3f)));
     out.append(1, static_cast<char>(0x80 | (codepoint & 0x3f)));
   }
-  return out;
 }
+
+void Char32VectorToString(const std::vector<char32_t>& codepoints, std::string& out) {
+  for (char32_t codepoint : codepoints) {
+    Char32ToString(codepoint, out);
+  }
+}
+
 }
