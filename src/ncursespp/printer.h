@@ -22,7 +22,6 @@ class BufferWindow;
 class Printer {
 protected:
   virtual void NC_AddStr(Point point, const std::vector<char32_t>& text) const = 0;
-  virtual void NC_AddCh(Point point, unsigned int c) const = 0;
 public:
   void DrawTextBuffer(npp::TextBuffer* text_buffer, View view, TextPrinterOptions options = TextPrinterOptions()) const;
   void DrawEmptyView(View view) const;
@@ -41,7 +40,6 @@ private:
   npp::ScreenWindow* window_;
 protected:
   void NC_AddStr(Point point, const std::vector<char32_t>& text) const override;
-  void NC_AddCh(Point point, unsigned int c) const override;
 public:
   explicit ScreenPrinter(npp::ScreenWindow* window) : window_(window) {}
 };
@@ -51,7 +49,6 @@ private:
   npp::BufferWindow* window_;
 protected:
   void NC_AddStr(Point point, const std::vector<char32_t>& text) const override;
-  void NC_AddCh(Point point, unsigned int c) const override;
 public:
   explicit BufferPrinter(npp::BufferWindow* window) : window_(window) {}
 };

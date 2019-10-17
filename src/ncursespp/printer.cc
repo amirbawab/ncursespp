@@ -11,10 +11,6 @@ void ScreenPrinter::NC_AddStr(npp::Point point, const std::vector<char32_t>& tex
   mvwaddstr(window_->CursesWindow(), point.y, point.x, text_str.c_str());
 }
 
-void ScreenPrinter::NC_AddCh(npp::Point point, const chtype c) const {
-  mvwaddch(window_->CursesWindow(), point.y, point.x, c);
-}
-
 void BufferPrinter::NC_AddStr(npp::Point point, const std::vector<char32_t>& text) const {
   auto window_view = window_->View();
   Point relative_point = {point.x - window_view.x, point.y - window_view.y};
@@ -23,10 +19,6 @@ void BufferPrinter::NC_AddStr(npp::Point point, const std::vector<char32_t>& tex
   std::vector<char32_t>& row = window_->RowAt(relative_point.y);
   auto string_begin = row.begin() + relative_point.x;
   std::copy(text.begin(), text.end(), string_begin);
-}
-
-void BufferPrinter::NC_AddCh(npp::Point point, unsigned int c) const {
-  window_->CharAt(point) = static_cast<char>(c);
 }
 
 void Printer::DrawTextBuffer(npp::TextBuffer* text_buffer, npp::View view, npp::TextPrinterOptions options) const {
@@ -55,11 +47,9 @@ void Printer::DrawEmptyView(npp::View view) const {
   int x_end = x_begin + view.cols;
   int y_begin = view.y;
   int y_end = y_begin + view.rows;
-
   for(int y = y_begin; y < y_end; y++) {
-    for(int x = x_begin; x < x_end; x++) {
-      NC_AddCh({x, y}, ' ');
-    }
+    std::vector<char32_t> empty_line(static_cast<size_t>(x_end - x_begin), ' ');
+    NC_AddStr({x_begin, y}, empty_line);
   }
 }
 
