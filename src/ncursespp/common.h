@@ -1,7 +1,7 @@
 #ifndef NPP_COMMON_H_
 #define NPP_COMMON_H_
 
-#include <stdio.h>
+#include <cstdio>
 #include <vector>
 #include <string>
 
@@ -34,6 +34,7 @@ do {                                      \
 
 namespace npp {
 
+std::string Char32ToString(char32_t codepoint);
 
 }
 
