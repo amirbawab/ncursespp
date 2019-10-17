@@ -3,7 +3,7 @@
 
 namespace npp {
 
-Button::Button(std::string text) : text_(std::move(text)) {
+Button::Button(std::u32string text) : text_(std::move(text)) {
   AddChild(&text_);
 
   // Add thin button border
@@ -15,7 +15,7 @@ Button::Button(std::string text) : text_(std::move(text)) {
   Layout()->SetBorder(borders);
 }
 
-void Button::SetText(std::string value) {
+void Button::SetText(std::u32string value) {
   text_.SetValue(std::move(value));
 }
 

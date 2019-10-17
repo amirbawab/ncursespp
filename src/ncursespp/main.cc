@@ -17,12 +17,12 @@ int main() {
 
   npp::Panel left;
   left.Layout()->SetBorder(border);
-  npp::Button left_button("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nbbb\nccc");
+  npp::Button left_button(U"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u250caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nbbb\nccc");
   left.AddChild(&left_button);
 
   npp::ScrollPanel right(100, 100);
   // FIXME Fix case of "hello world\n\r"
-  npp::Text right_text("hello world");
+  npp::Text right_text(U"hello world");
   right.AddChildToMainPanel(&right_text);
 
   auto main_panel = main_window.Panel();

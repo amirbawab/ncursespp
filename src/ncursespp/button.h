@@ -10,8 +10,8 @@ class Button : public Panel {
 private:
   npp::Text text_;
 public:
-  explicit Button(std::string text = std::string());
-  void SetText(std::string);
+  explicit Button(std::u32string text = std::u32string());
+  void SetText(std::u32string);
   void PrintInner(npp::Window* window) override;
 };
 

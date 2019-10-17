@@ -11,27 +11,27 @@ namespace npp {
 
 class TextBuffer {
 public:
-  virtual void FromString(std::string) = 0;
-  virtual const std::vector<std::vector<char>>& Value() = 0;
+  virtual void FromString(std::u32string) = 0;
+  virtual const std::vector<std::vector<char32_t>>& Value() = 0;
 };
 
 class CompressedTextBuffer : public TextBuffer {
 private:
-  std::vector<std::vector<char>> text_vector_;
+  std::vector<std::vector<char32_t>> text_vector_;
 public:
-  void FromString(std::string text) override;
-  const std::vector<std::vector<char>>& Value() override;
+  void FromString(std::u32string text) override;
+  const std::vector<std::vector<char32_t>>& Value() override;
 };
 
 class GapTextBuffer : public TextBuffer {
 private:
-  GapBuffer<GapBuffer<char>> text_buffer_;
-  std::vector<std::vector<char>> cached_text_vector_;
+  GapBuffer<GapBuffer<char32_t>> text_buffer_;
+  std::vector<std::vector<char32_t>> cached_text_vector_;
   bool polluted_ = true;
   void CacheValue();
 public:
-  void FromString(std::string text) override;
-  const std::vector<std::vector<char>>& Value() override;
+  void FromString(std::u32string text) override;
+  const std::vector<std::vector<char32_t>>& Value() override;
   // TODO Insert(), Remove(), etc ...
 };
 
@@ -39,8 +39,8 @@ class Text : public Panel {
 private:
   npp::CompressedTextBuffer text_buffer_;
 public:
-  explicit Text(std::string value = std::string());
-  void SetValue(std::string value);
+  explicit Text(std::u32string value = std::u32string());
+  void SetValue(std::u32string value);
   void PrintInner(npp::Window* window) override;
 };
 
