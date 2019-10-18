@@ -21,6 +21,7 @@ private:
   std::vector<Panel*> children_;
   bool hidden_ = false;
   void PrintOuter(npp::Window* window);
+  void FitOuter();
 protected:
   virtual void PrintInner(npp::Window* window);
   virtual void FitInner();

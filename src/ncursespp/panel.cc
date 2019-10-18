@@ -29,12 +29,16 @@ bool Panel::RemoveChild(npp::Panel *panel) {
 
 void Panel::Fit() {
   if(!IsHidden()) {
+    FitOuter();
     FitInner();
   }
 }
 
-void Panel::FitInner() {
+void Panel::FitOuter() {
   layout_->Fit(this);
+}
+
+void Panel::FitInner() {
   for(auto& child : children_) {
     child->Fit();
   }
@@ -48,19 +52,17 @@ void Panel::Print(npp::Window* window) {
 }
 
 void Panel::PrintOuter(npp::Window *window) {
-  // We assume that panel has already been check
-  // if it's hidden or not
   window->Printer()->DrawBorder(layout_->Border(), layout_->MarginView(this));
-}
-
-npp::View Panel::InnerView() {
-  layout_->PaddingView(this);
 }
 
 void Panel::PrintInner(npp::Window *window) {
   for(auto& child : children_) {
     child->Print(window);
   }
+}
+
+npp::View Panel::InnerView() {
+  layout_->PaddingView(this);
 }
 
 void Panel::Clear(npp::Window *window) {
@@ -126,9 +128,6 @@ void ScrollPanel::PrintInner(npp::Window *window) {
 }
 
 void ScrollPanel::FitInner() {
-  // Layout children of this panel (center, right and bottom)
-  Layout()->Fit(this);
-
   // TODO (amir) Find a better way to set this (maybe a ScrollLayout extending SidedLayout?)
   // TODO (amir) Need to consider moving the window vertically and horizontally
   {
