@@ -32,7 +32,7 @@ void ScreenWindow::Fit() {
 }
 
 void ScreenWindow::Print() {
-  panel_.Print(this);
+  panel_.Print(this, this);
 }
 
 void ScreenWindow::Clear() {

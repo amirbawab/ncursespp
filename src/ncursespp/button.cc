@@ -20,7 +20,7 @@ void Button::SetText(std::u32string value) {
 }
 
 void Button::PrintInner(npp::Window* window) {
-  text_.Print(window);
+  text_.Print(window, window);
 }
 
 } // namespace npp

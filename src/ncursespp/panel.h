@@ -38,7 +38,7 @@ public:
   npp::View View() const { return view_; }
   npp::View InnerView();
   void SetView(npp::View view) { view_ = view; }
-  void Print(npp::Window* window);
+  void Print(npp::Window* window_outer, npp::Window* window_inner);
   void SetHidden(bool hidden) { hidden_ = hidden; }
   bool IsHidden() const { return hidden_; }
   virtual void Clear(npp::Window* window);

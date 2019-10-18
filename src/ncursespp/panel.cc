@@ -44,10 +44,10 @@ void Panel::FitInner() {
   }
 }
 
-void Panel::Print(npp::Window* window) {
+void Panel::Print(npp::Window *window_outer, npp::Window *window_inner) {
   if(!IsHidden()) {
-    PrintOuter(window);
-    PrintInner(window);
+    PrintOuter(window_outer);
+    PrintInner(window_inner);
   }
 }
 
@@ -57,7 +57,7 @@ void Panel::PrintOuter(npp::Window *window) {
 
 void Panel::PrintInner(npp::Window *window) {
   for(auto& child : children_) {
-    child->Print(window);
+    child->Print(window, window);
   }
 }
 
@@ -99,19 +99,9 @@ void ScrollPanel::AddChildToMainPanel(npp::Panel *panel) {
 }
 
 void ScrollPanel::PrintInner(npp::Window *window) {
-  // Print right and bottom scroll panels
-  right_scroll_.Print(window);
-  bottom_scroll_.Print(window);
-
-  // TODO (amir) Find a better way to call FitInner(window) and FitOuter(buffer_window) (Maybe modify Fit(win1, wind2)?)
-  {
-    // Center panel content is printed on the buffer
-    // and the outer border on the parent's window
-    window->Printer()->DrawBorder(center_panel_.Layout()->Border(), center_panel_.Layout()->MarginView(&center_panel_));
-    for(auto &child : center_panel_.Children()) {
-      child->Print(buffer_window_);
-    }
-  }
+  right_scroll_.Print(window, window);
+  bottom_scroll_.Print(window, window);
+  center_panel_.Print(window, buffer_window_);
 
   // FIXME (amir) Temporary indicator of scroll panel
   {
