@@ -2,7 +2,7 @@
 #define NPP_TEXT_H_
 
 #include <ncursespp/panel/panel.h>
-#include <ncursespp/buffer/text_buffer.h>
+#include <ncursespp/buffer/compressed_text_buffer.h>
 
 namespace npp {
 
