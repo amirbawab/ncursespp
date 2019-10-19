@@ -49,6 +49,11 @@ void Char32ToString(char32_t codepoint, std::string& out);
  */
 void Char32VectorToString(const std::vector<char32_t>& codepoints, std::string& out);
 
+enum Orientation {
+  Vertical,
+  Horizontal
+};
+
 }
 
 #endif

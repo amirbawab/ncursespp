@@ -2,13 +2,9 @@
 #define NPP_TILE_LAYOUT_H_
 
 #include <ncursespp/layout/layout.h>
+#include <ncursespp/common.h>
 
 namespace npp {
-
-enum Orientation {
-  Vertical,
-  Horizontal
-};
 
 class TileLayout : public Layout {
 private:

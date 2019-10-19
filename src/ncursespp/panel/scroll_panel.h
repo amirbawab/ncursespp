@@ -7,10 +7,11 @@ namespace npp {
 
 class SidedLayout;
 class FixedLayout;
+class ScrollerPanel;
 class ScrollPanel : public Panel {
 private:
-  Panel right_scroll_;
-  Panel bottom_scroll_;
+  ScrollerPanel* right_scroller_;
+  ScrollerPanel* bottom_scroller_;
   // Center panel is simply an intermediate panel
   // It should NOT be used to add children outside
   // this class. This panel can be used to add border

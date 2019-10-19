@@ -3,10 +3,43 @@
 #include <ncursespp/window/buffer_window.h>
 #include <ncursespp/layout/sided_layout.h>
 #include <ncursespp/layout/fixed_layout.h>
+#include <ncursespp/common.h>
 
 namespace npp {
 
+class ScrollerPanel : public Panel {
+private:
+  Orientation orientation_;
+  float value_ = 0.0f;
+public:
+  explicit ScrollerPanel(Orientation orientation) : orientation_(orientation) {}
+  void SetValue(float value) {
+    value_ = std::max(value, 0.0f);
+    value_ = std::min(value_, 1.0f);
+  }
+  float Value() const { return value_; }
+  void PrintInner(npp::Window* window) override {
+    auto inner_view = InnerView();
+
+    int y_begin = inner_view.y;
+    int y_end, width;
+    if(orientation_ == Horizontal) {
+      y_end = y_begin + inner_view.rows;
+      width = (int) (inner_view.cols * value_);
+    } else {
+      assert(orientation_ == Vertical);
+      y_end = y_begin + (int)(inner_view.rows * value_);
+      width = inner_view.cols;
+    }
+    for(auto y=y_begin; y < y_end; y++) {
+      window->Printer()->DrawChar32Vector({inner_view.x, y}, std::vector<char32_t>(width, 0x2588));
+    }
+  }
+};
+
 ScrollPanel::ScrollPanel(int rows, int cols) : buffer_window_(new BufferWindow({0, 0, rows, cols})) {
+  right_scroller_ = new ScrollerPanel(Vertical);
+  bottom_scroller_ = new ScrollerPanel(Horizontal);
   SetupPanels();
 }
 
@@ -14,11 +47,11 @@ void ScrollPanel::SetupPanels() {
 
   // Scroll panel layout and children
   sided_layout_ = new SidedLayout();
-  AddChild(&right_scroll_);
-  AddChild(&bottom_scroll_);
+  AddChild(right_scroller_);
+  AddChild(bottom_scroller_);
   AddChild(&center_panel_);
-  sided_layout_->SetSide(&right_scroll_, SidePanel::Right, 1);
-  sided_layout_->SetSide(&bottom_scroll_, SidePanel::Bottom, 1);
+  sided_layout_->SetSide(right_scroller_, SidePanel::Right, 2);
+  sided_layout_->SetSide(bottom_scroller_, SidePanel::Bottom, 1);
   sided_layout_->SetSide(&center_panel_, SidePanel::Center, -1);
   SetLayout(sided_layout_);
 
@@ -33,19 +66,9 @@ void ScrollPanel::AddChildToMainPanel(npp::Panel *panel) {
 }
 
 void ScrollPanel::PrintInner(npp::Window *window) {
-  right_scroll_.Print(window, window);
-  bottom_scroll_.Print(window, window);
+  right_scroller_->Print(window, window);
+  bottom_scroller_->Print(window, window);
   center_panel_.Print(window, buffer_window_);
-
-  // FIXME (amir) Temporary indicator of scroll panel
-  {
-    CompressedTextBuffer vertical_text_buffer;
-    vertical_text_buffer.FromString(U"Vertical Scroll");
-    window->Printer()->DrawTextBuffer(&vertical_text_buffer, right_scroll_.InnerView());
-    CompressedTextBuffer horizontal_text_buffer;
-    horizontal_text_buffer.FromString(U"Horizontal Scroll");
-    window->Printer()->DrawTextBuffer(&horizontal_text_buffer, bottom_scroll_.InnerView());
-  }
 
   // Copy buffer to parent parent window
   window->Copy(buffer_window_, center_panel_.InnerView());
