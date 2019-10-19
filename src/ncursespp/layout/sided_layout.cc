@@ -1,86 +1,7 @@
-#include <ncursespp/layout.h>
+#include <ncursespp/layout/sided_layout.h>
 #include <ncursespp/common.h>
 
 namespace npp {
-
-Layout::Layout() {
-  SetMargin({0, 0, 0, 0});
-  SetPadding({0, 0, 0, 0});
-}
-
-npp::View Layout::MarginView(Panel* panel) const {
-  auto view = panel->View();
-  view.x += margin_.left;
-  view.y += margin_.top;
-  view.cols -= margin_.left + margin_.right;
-  view.rows -= margin_.top + margin_.bottom;
-  return view;
-}
-
-npp::View Layout::BorderView(npp::Panel *panel) const {
-  auto view = MarginView(panel);
-  int top = border_.top.None() ? 0 : 1;;
-  int left = border_.left.None() ? 0 : 1;;
-  int bottom = border_.bottom.None() ? 0 : 1;;
-  int right = border_.right.None() ? 0 : 1;;
-  view.x += left;
-  view.y += top;
-  view.cols -= left + right;
-  view.rows -= top + bottom;
-  return view;
-}
-
-npp::View Layout::PaddingView(npp::Panel *panel) const {
-  auto view = BorderView(panel);
-  view.x += padding_.left;
-  view.y += padding_.top;
-  view.cols -= padding_.right;
-  view.rows -= padding_.bottom;
-  return view;
-}
-
-void TileLayout::SetWeight(Panel* panel, float weight) {
-  weights_[panel] = weight;
-}
-
-float TileLayout::PanelWeight(npp::Panel* panel) {
-  if(weights_.find(panel) != weights_.end()) {
-    return weights_[panel];
-  }
-  // Default weight value
-  return 1.0f;
-}
-
-void TileLayout::Fit(Panel* panel) {
-  auto children = panel->Children();
-  uint64_t count_tiles = children.size();
-
-  // Compute total children tiles weight
-  auto panel_inner_view = panel->InnerView();
-  float total_weight = 0.0f;
-  for(auto i=0; i < count_tiles; i++) {
-    total_weight += PanelWeight(children[i]);
-  }
-
-  // Update view for each child
-  int offset = 0;
-  for(auto i=0; i < count_tiles; i++) {
-    float normalized_weight = PanelWeight(children[i]) / total_weight;
-    View tile_view = panel_inner_view;
-    if(orientation_ == Horizontal) {
-      tile_view.cols *= normalized_weight;
-      tile_view.x += offset;
-      offset += tile_view.cols;
-    } else if(orientation_ == Vertical) {
-      tile_view.rows *= normalized_weight;
-      tile_view.y += offset;
-      offset += tile_view.rows;
-    } else {
-      NPP_FATAL("unknown orientation");
-    }
-    children[i]->SetView(tile_view);
-  }
-}
 
 SidePanel SidedLayout::PanelSidePanel(npp::Panel *panel, uint32_t *side_flags) {
   if(sides_.find(panel) != sides_.end() && ((static_cast<uint32_t >(sides_[panel].side) & *side_flags) == 0)) {
@@ -196,36 +117,6 @@ void SidedLayout::Fit(npp::Panel *panel) {
       center_panel->SetHidden(false);
     } else {
       center_panel->SetHidden(true);
-    }
-  }
-}
-
-void FixedLayout::SetFixedView(npp::Panel *panel, npp::View view) {
-  fixed_panels_[panel] = view;
-}
-
-npp::View FixedLayout::PanelFixedView(npp::Panel *panel) {
-  if(fixed_panels_.find(panel) != fixed_panels_.end()) {
-    return fixed_panels_[panel];
-  }
-  // Default, view is non-existent
-  // TODO Replace with INVISIBLE_VIEW
-  return {0, 0, 0, 0};
-}
-
-void FixedLayout::Fit(npp::Panel *panel) {
-  auto children = panel->Children();
-  uint64_t count_panels = children.size();
-  for(auto i=0; i < count_panels; i++) {
-    auto child_panel = children[i];
-    auto child_panel_view = PanelFixedView(child_panel);
-    DCHECK_GE(child_panel_view.x, 0);
-    DCHECK_GE(child_panel_view.y, 0);
-    if(child_panel_view.rows > 0 && child_panel_view.cols > 0) {
-      child_panel->SetHidden(false);
-      child_panel->SetView(child_panel_view);
-    } else {
-      child_panel->SetHidden(true);
     }
   }
 }

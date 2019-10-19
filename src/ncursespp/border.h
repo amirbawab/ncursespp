@@ -1,5 +1,5 @@
 #ifndef NPP_BORDER_H_
-#define BPP_BORDER_H_
+#define NPP_BORDER_H_
 
 namespace npp {
 

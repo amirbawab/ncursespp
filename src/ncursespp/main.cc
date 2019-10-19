@@ -1,8 +1,8 @@
 #include <iostream>
-#include <ncursespp/window.h>
-#include <ncursespp/panel.h>
-#include <ncursespp/layout.h>
-#include <ncursespp/button.h>
+#include <ncursespp/window/screen_window.h>
+#include <ncursespp/panel/scroll_panel.h>
+#include <ncursespp/layout/layout.h>
+#include <ncursespp/panel/button.h>
 
 int main() {
   npp::ScreenWindow main_window;

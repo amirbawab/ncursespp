@@ -1,5 +1,5 @@
-#include <ncursespp/button.h>
-#include <ncursespp/layout.h>
+#include <ncursespp/panel/button.h>
+#include <ncursespp/layout/layout.h>
 
 namespace npp {
 

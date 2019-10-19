@@ -1,8 +1,8 @@
 #ifndef NPP_BUTTON_H_
 #define NPP_BUTTON_H_
 
-#include <ncursespp/panel.h>
-#include <ncursespp/text.h>
+#include <ncursespp/panel/panel.h>
+#include <ncursespp/panel/text.h>
 
 namespace npp {
 

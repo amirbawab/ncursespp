@@ -1,25 +1,8 @@
-#include <ncursespp/printer.h>
-#include <ncursespp/window.h>
+#include <ncursespp/printer/printer.h>
 #include <ncursespp/common.h>
 #include <algorithm>
 
 namespace npp {
-
-void ScreenPrinter::NC_AddStr(npp::Point point, const std::vector<char32_t>& text) const {
-  std::string text_str;
-  Char32VectorToString(text, text_str);
-  mvwaddstr(window_->CursesWindow(), point.y, point.x, text_str.c_str());
-}
-
-void BufferPrinter::NC_AddStr(npp::Point point, const std::vector<char32_t>& text) const {
-  auto window_view = window_->View();
-  Point relative_point = {point.x - window_view.x, point.y - window_view.y};
-  DCHECK_GE(relative_point.x, 0);
-  DCHECK_GE(relative_point.y, 0);
-  std::vector<char32_t>& row = window_->RowAt(relative_point.y);
-  auto string_begin = row.begin() + relative_point.x;
-  std::copy(text.begin(), text.end(), string_begin);
-}
 
 void Printer::DrawTextBuffer(npp::TextBuffer* text_buffer, npp::View view, npp::TextPrinterOptions options) const {
   int x_begin = view.x;

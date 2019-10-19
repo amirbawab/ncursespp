@@ -3,8 +3,8 @@
 
 #include <string>
 #include <ncursespp/view.h>
-#include <ncursespp/layout.h>
-#include <ncursespp/text.h>
+#include <ncursespp/layout/layout.h>
+#include <ncursespp/panel/text.h>
 
 namespace npp {
 
@@ -33,24 +33,6 @@ public:
   void DrawBRCorner(Point point, BorderStyle style = SolidThin) const;
   void DrawBorder(Borders borders, View view) const;
   void DrawChar32Vector(Point point, const std::vector<char32_t>& text) const;
-};
-
-class ScreenPrinter : public Printer {
-private:
-  npp::ScreenWindow* window_;
-protected:
-  void NC_AddStr(Point point, const std::vector<char32_t>& text) const override;
-public:
-  explicit ScreenPrinter(npp::ScreenWindow* window) : window_(window) {}
-};
-
-class BufferPrinter : public Printer {
-private:
-  npp::BufferWindow* window_;
-protected:
-  void NC_AddStr(Point point, const std::vector<char32_t>& text) const override;
-public:
-  explicit BufferPrinter(npp::BufferWindow* window) : window_(window) {}
 };
 
 } // namespace npp

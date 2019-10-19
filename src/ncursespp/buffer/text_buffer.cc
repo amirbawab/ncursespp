@@ -1,5 +1,4 @@
-#include <ncursespp/text.h>
-#include <ncursespp/window.h>
+#include <ncursespp/buffer/text_buffer.h>
 
 namespace npp {
 
@@ -53,19 +52,6 @@ void CompressedTextBuffer::FromString(std::u32string text) {
 
 const std::vector<std::vector<char32_t >>& CompressedTextBuffer::Value() {
   return text_vector_;
-}
-
-Text::Text(std::u32string value) {
-  SetValue(std::move(value));
-}
-
-void Text::SetValue(std::u32string value) {
-  text_buffer_.FromString(std::move(value));
-}
-
-void Text::PrintInner(npp::Window* window) {
-  auto inner_view = InnerView();
-  window->Printer()->DrawTextBuffer(&text_buffer_, inner_view);
 }
 
 } // namespace npp
