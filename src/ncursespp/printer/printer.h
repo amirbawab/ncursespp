@@ -5,13 +5,9 @@
 #include <ncursespp/view.h>
 #include <ncursespp/layout/layout.h>
 #include <ncursespp/panel/text.h>
+#include <ncursespp/common.h>
 
 namespace npp {
-
-struct Point {
-  int x;
-  int y;
-};
 
 struct TextPrinterOptions {
   bool wrap = true;

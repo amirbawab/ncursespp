@@ -2,6 +2,11 @@
 
 namespace npp {
 
+GapTextBuffer::GapTextBuffer() {
+  cursor_ = {0, 0};
+  NewLine();
+}
+
 void GapTextBuffer::CacheValue() {
   // Erase old data
   cached_text_vector_.clear();
@@ -34,6 +39,24 @@ const std::vector<std::vector<char32_t>>& GapTextBuffer::Value() {
     polluted_ = false;
   }
   return cached_text_vector_;
+}
+
+void GapTextBuffer::Move(npp::Cursor cursor) {
+  cursor_.y = text_buffer_.MoveIndex(cursor.y);
+  GapBuffer<char32_t>* line = text_buffer_.At(cursor.y);
+  DCHECK_NE(line, nullptr);
+  cursor_.x = line->MoveIndex(cursor.x);
+}
+
+void GapTextBuffer::Insert(std::u32string text) {
+  // We should always have at least one line
+  DCHECK_GE(text_buffer_.ValueSize(), 1);
+  polluted_ = true;
+  text_buffer_.At(cursor_.y)->Insert(std::vector<char32_t>(text.begin(), text.end()));
+}
+
+void GapTextBuffer::NewLine() {
+  text_buffer_.Insert({GapBuffer<char32_t>()});
 }
 
 } // namespace npp

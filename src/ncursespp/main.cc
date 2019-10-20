@@ -3,6 +3,7 @@
 #include <ncursespp/panel/scroll_panel.h>
 #include <ncursespp/layout/layout.h>
 #include <ncursespp/panel/button.h>
+#include <ncursespp/panel/input.h>
 
 int main() {
   npp::ScreenWindow main_window;
@@ -15,25 +16,14 @@ int main() {
   border.right.style = npp::SolidThin;
   border.bottom.style = npp::SolidThin;
 
-  npp::Panel left;
-  left.Layout()->SetBorder(border);
-  npp::Button left_button(U"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u250caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nbbb\nccc");
-  left.AddChild(&left_button);
-
-  npp::ScrollPanel right(100, 100);
-  // FIXME Fix case of "hello world\n\r"
-  npp::Button right_item(U"hello world");
-  right.AddChildToMainPanel(&right_item);
+  // Input field
+  npp::Input input;
+  input.Text().Insert(U"Hello world");
 
   auto main_panel = main_window.Panel();
-  main_panel->AddChild(&left);
-  main_panel->AddChild(&right);
+  main_panel->AddChild(&input);
   main_window.Fit();
   main_window.Print();
-
-//  printf("r=%d\tc=%d\n\r", main_window.Rows(), main_window.Cols());
-//  printf("x=%d\ty=%d\tr=%d\tc=%d\n\r", left.View().x, left.View().y, left.View().rows, left.View().cols);
-//  printf("x=%d\ty=%d\tr=%d\tc=%d\n\r", right.View().x, right.View().y, right.View().rows, right.View().cols);
 
   refresh();
   while(getch()) {

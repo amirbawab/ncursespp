@@ -31,7 +31,7 @@ private:
     gap_end_ = new_gap_end;
   }
 public:
-  explicit GapBuffer(uint64_t initial_size = 100, uint64_t additional_gap = 50) : buffer_(initial_size) {
+  explicit GapBuffer(uint64_t initial_size = 100, uint64_t additional_gap = 200) : buffer_(initial_size) {
     gap_begin_ = 0;
     gap_end_ = buffer_.size();
     additional_gap_ = additional_gap;
@@ -152,6 +152,22 @@ public:
    */
   std::vector<T> Buffer() const {
     return buffer_;
+  }
+
+  /**
+   * Obtain element at
+   * @param index
+   * @param out
+   * @return
+   */
+  T* At(uint64_t index) {
+    if(index < gap_begin_) {
+      return &buffer_[index];
+    }
+    if(index > ValueSize()) {
+      return nullptr;
+    }
+    return &buffer_[index - (gap_end_ - gap_begin_)];
   }
 
   /**
