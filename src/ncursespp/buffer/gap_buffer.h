@@ -177,6 +177,14 @@ public:
   size_t ValueSize() const {
     return buffer_.size() - (gap_end_ - gap_begin_);
   }
+
+  /**
+   * Return the gap begin index
+   * @return index
+   */
+  uint64_t GapBegin() const {
+    return gap_begin_;
+  }
 };
 
 }; // namespace npp

@@ -8,8 +8,10 @@
 namespace npp {
 
 struct WindowOptions {
-  bool no_echo = false;
-  bool keypard = false;
+  bool no_echo = true;
+  bool keypard = true;
+  bool start_color = true;
+  bool cursor = false;
 };
 
 class Window {

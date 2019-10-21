@@ -18,6 +18,8 @@ class BufferWindow;
 class Printer {
 protected:
   virtual void NC_AddStr(Point point, const std::vector<char32_t>& text) const = 0;
+  virtual void NC_SetAttribute(npp::Point point, unsigned attribute, bool value) const = 0;
+  virtual void NC_ChangeAttribute(npp::Point point, unsigned attribute) const = 0;
 public:
   void DrawTextBuffer(npp::TextBuffer* text_buffer, View view, TextPrinterOptions options = TextPrinterOptions()) const;
   void DrawEmptyView(View view) const;

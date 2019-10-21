@@ -3,8 +3,18 @@
 namespace npp {
 
 GapTextBuffer::GapTextBuffer() {
-  cursor_ = {0, 0};
   NewLine();
+}
+
+npp::Cursor GapTextBuffer::Cursor() {
+  auto y = text_buffer_.GapBegin();
+  // There should always be at least one element
+  // before the beginning of the gap
+  DCHECK_GE(y, 1);
+  y -= 1;
+  auto current_line = text_buffer_.At(y);
+  auto x = current_line->GapBegin();
+  return {x, y};
 }
 
 void GapTextBuffer::CacheValue() {
@@ -42,17 +52,18 @@ const std::vector<std::vector<char32_t>>& GapTextBuffer::Value() {
 }
 
 void GapTextBuffer::Move(npp::Cursor cursor) {
-  cursor_.y = text_buffer_.MoveIndex(cursor.y);
+  // Fix cursor data
+  cursor.y = std::max(cursor.y, 1lu);
+  DCHECK_GE(text_buffer_.ValueSize(), 1);
+  text_buffer_.MoveIndex(cursor.y);
   GapBuffer<char32_t>* line = text_buffer_.At(cursor.y);
-  DCHECK_NE(line, nullptr);
-  cursor_.x = line->MoveIndex(cursor.x);
+  line->MoveIndex(cursor.x);
 }
 
 void GapTextBuffer::Insert(std::u32string text) {
-  // We should always have at least one line
-  DCHECK_GE(text_buffer_.ValueSize(), 1);
+  auto cursor = Cursor();
   polluted_ = true;
-  text_buffer_.At(cursor_.y)->Insert(std::vector<char32_t>(text.begin(), text.end()));
+  text_buffer_.At(cursor.y)->Insert(std::vector<char32_t>(text.begin(), text.end()));
 }
 
 void GapTextBuffer::NewLine() {

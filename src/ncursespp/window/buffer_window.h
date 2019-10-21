@@ -8,6 +8,7 @@ namespace npp {
 class BufferWindow : public Window {
 private:
   std::vector<std::vector<char32_t>> window_buffer_;
+  std::vector<std::vector<unsigned>> window_attributes_;
   npp::View view_;
   void SetupWindow();
 public:
@@ -15,6 +16,8 @@ public:
   npp::View View() const override { return view_; };
   char32_t& CharAt(Point point);
   std::vector<char32_t>& RowAt(int y);
+  unsigned& AttributeAt(Point point);
+  std::vector<unsigned>& AttributesAt(int y);
   void SetPoint(Point point);
   void Copy(BufferWindow* buffer_window, npp::View view) override;
 };

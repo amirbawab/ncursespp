@@ -18,7 +18,7 @@ int main() {
 
   // Input field
   npp::Input input;
-  input.Text().Insert(U"Hello world");
+  input.Text().Insert(U"\u250cHello world");
 
   auto main_panel = main_window.Panel();
   main_panel->AddChild(&input);

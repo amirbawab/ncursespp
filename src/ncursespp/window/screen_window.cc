@@ -11,6 +11,8 @@ void ScreenWindow::Initialize() {
   auto options = Options();
   if(options.no_echo) noecho();
   if(options.keypard) keypad(window_, TRUE);
+  if(options.start_color) start_color();
+  if(!options.cursor) curs_set(0);
 }
 
 void ScreenWindow::Destroy() {
